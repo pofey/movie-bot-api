@@ -24,14 +24,14 @@ class User:
         self.score_rule_name: str = utils.parse_value(str, data.get('score_rule_name'))
         self.password: str = utils.parse_value(str, data.get('password'))
 
-    def delete_user(self):
-        self._api.delete_user(self.uid)
+    def delete(self):
+        self._api.delete(self.uid)
 
     def reset_password(self, new_password: str):
         self._api.reset_password(self.uid, new_password)
 
-    def update_user(self):
-        self._api.update_user(self)
+    def update(self):
+        self._api.update(self)
 
 
 class UserApi:
@@ -41,10 +41,10 @@ class UserApi:
     def reset_password(self, uid: int, new_password: str):
         self._session.post('user.reset_password', json={'uid': uid, 'password': new_password})
 
-    def delete_user(self, uid: int):
+    def delete(self, uid: int):
         self._session.post('user.delete_user', json={'uid': uid})
 
-    def get_user(self, uid: int) -> Optional[User]:
+    def get(self, uid: int) -> Optional[User]:
         user = self._session.get('user.get_user', params={
             'id': uid
         })
@@ -52,7 +52,7 @@ class UserApi:
             return
         return User(user, self)
 
-    def update_user(self, user: User):
+    def update(self, user: User):
         self._session.post('user.update_user', json={
             'uid': user.uid,
             'username': user.username,
@@ -67,7 +67,7 @@ class UserApi:
             'telegram_user_id': user.telegram_user_id
         })
 
-    def get_user_list(self) -> List[User]:
+    def list(self) -> List[User]:
         list_ = self._session.get('user.get_user_list')
         if not list_:
             return []

@@ -6,14 +6,14 @@ server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
 def test_get_user_list():
-    assert server.user.get_user_list()
+    assert server.user.list()
 
 
 def test_get_user():
-    user = server.user.get_user(1)
+    user = server.user.get(1)
     assert user
     user.nickname = 'test'
-    user.update_user()
-    user = server.user.get_user(1)
+    user.update()
+    user = server.user.get(1)
     assert user
     assert user.nickname == 'test'

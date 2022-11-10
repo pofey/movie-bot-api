@@ -1,1 +1,3 @@
 httpx
+pyrate-limiter
+tenacity

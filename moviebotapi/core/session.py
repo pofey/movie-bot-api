@@ -41,7 +41,7 @@ class AccessKeySession(Session):
     def __init__(self, server_url: URLTypes, access_key: str):
         self.server_url: URLTypes = server_url
         self.access_key: str = access_key
-        self.timeout = Timeout(15)
+        self.timeout = Timeout(30)
 
     def _get_headers(self, headers: Optional[HeaderTypes] = None):
         if not headers:

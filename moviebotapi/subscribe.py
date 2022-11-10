@@ -23,38 +23,40 @@ class SubStatus(int, Enum):
 
 
 class Subscribe:
+    id: int
+    uid: int
+    en_name: str
+    desc: str
+    rating: float
+    status: SubStatus
+    from_action: str
+    alias: str
+    poster_path: str
+    download_mode: int
+    episode_count: int
+    release_year: int
+    season_year: int
+    remote_search: bool
+    is_aired: bool
+    media_type: MediaType
+    thumb_image_path: str
+    douban_id: int
+    tmdb_id: int
+    imdb_id: str
+    genres: str
+    area: str
+    choose_rule_name: str
+    release_date: str
+    cn_name: str
+    priority_keywords: str
+    filter_config: Dict
+    gmt_create: datetime.datetime
+    gmt_modified: datetime.datetime
+
     def __init__(self, data: Dict, api: 'SubscribeApi'):
+        utils.copy_value(data, self)
         self._api = api
-        self.id: int = utils.parse_value(int, data.get('id'))
-        self.uid: int = utils.parse_value(int, data.get('uid'))
-        self.en_name: str = utils.parse_value(str, data.get('en_name'))
-        self.desc: str = utils.parse_value(str, data.get('desc'))
-        self.rating: float = utils.parse_value(float, data.get('rating'))
-        self.status: SubStatus = utils.parse_value(SubStatus, data.get('status'))
-        self.from_action: str = utils.parse_value(str, data.get('from_action'))
-        self.alias: str = utils.parse_value(str, data.get('alias'))
-        self.poster_path: str = utils.parse_value(str, data.get('poster_path'))
-        self.download_mode: int = utils.parse_value(int, data.get('download_mode'))
         self.season_number: int = utils.parse_value(int, data.get('season_index'))
-        self.episode_count: int = utils.parse_value(int, data.get('episode_count'))
-        self.release_year: int = utils.parse_value(int, data.get('release_year'))
-        self.season_year: int = utils.parse_value(int, data.get('season_year'))
-        self.remote_search: bool = utils.parse_value(bool, data.get('remote_search'))
-        self.is_aired: bool = utils.parse_value(bool, data.get('is_aired'))
-        self.media_type: MediaType = utils.parse_value(MediaType, data.get('type'))
-        self.thumb_image_path: str = utils.parse_value(str, data.get('thumb_image_path'))
-        self.douban_id: int = utils.parse_value(int, data.get('douban_id'))
-        self.tmdb_id: int = utils.parse_value(int, data.get('tmdb_id'))
-        self.imdb_id: str = utils.parse_value(str, data.get('imdb_id'))
-        self.genres: str = utils.parse_value(str, data.get('genres'))
-        self.area: str = utils.parse_value(str, data.get('area'))
-        self.choose_rule_name: str = utils.parse_value(str, data.get('choose_rule_name'))
-        self.release_date: str = utils.parse_value(str, data.get('release_date'))
-        self.cn_name: str = utils.parse_value(str, data.get('cn_name'))
-        self.priority_keywords: str = utils.parse_value(str, data.get('priority_keywords'))
-        self.filter_config: Dict = utils.parse_value(Dict, data.get('filter_config'))
-        self.gmt_create: datetime.datetime = utils.parse_value(datetime.datetime, data.get('gmt_create'))
-        self.gmt_modified: datetime.datetime = utils.parse_value(datetime.datetime, data.get('gmt_modified'))
 
     def delete(self, deep_delete: bool = False):
         self._api.delete(self.id, deep_delete)

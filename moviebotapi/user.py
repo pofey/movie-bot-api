@@ -6,23 +6,25 @@ from moviebotapi.core.session import Session
 
 
 class User:
+    gmt_create: datetime.datetime
+    gmt_modified: datetime.datetime
+    username: str
+    nickname: str
+    douban_user: str
+    qywx_user: str
+    telegram_user_id: int
+    bark_url: str
+    avatar: str
+    role: int
+    user: str
+    pushdeer_key: str
+    score_rule_name: str
+    password: str
+
     def __init__(self, data: Dict, api: 'UserApi'):
+        utils.copy_value(data, self)
         self._api = api
-        self.gmt_create: datetime.datetime = utils.parse_value(datetime.datetime, data.get('gmt_create'))
-        self.gmt_modified: datetime.datetime = utils.parse_value(datetime.datetime, data.get('gmt_modified'))
         self.uid: int = utils.parse_value(int, data.get('id'))
-        self.username: str = utils.parse_value(str, data.get('username'))
-        self.nickname: str = utils.parse_value(str, data.get('nickname'))
-        self.douban_user: str = utils.parse_value(str, data.get('douban_user'))
-        self.qywx_user: str = utils.parse_value(str, data.get('qywx_user'))
-        self.telegram_user_id: int = utils.parse_value(int, data.get('telegram_user_id'))
-        self.bark_url: str = utils.parse_value(str, data.get('bark_url'))
-        self.avatar: str = utils.parse_value(str, data.get('avatar'))
-        self.role: int = utils.parse_value(int, data.get('role'))
-        self.user: str = utils.parse_value(str, data.get('qywx_user'))
-        self.pushdeer_key: str = utils.parse_value(str, data.get('pushdeer_key'))
-        self.score_rule_name: str = utils.parse_value(str, data.get('score_rule_name'))
-        self.password: str = utils.parse_value(str, data.get('password'))
 
     def delete(self):
         self._api.delete(self.uid)

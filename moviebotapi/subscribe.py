@@ -64,6 +64,12 @@ class SubscribeApi:
     def __init__(self, session: Session):
         self._session: Session = session
 
+    def get(self, subscribe_id: int) -> Optional[Subscribe]:
+        sub = self._session.get('subscribe.get_sub', params={'id': subscribe_id})
+        if not sub:
+            return
+        return Subscribe(sub, self)
+
     def list(self, media_type: Optional[MediaType] = None, status: Optional[SubStatus] = None):
         params = {}
         if media_type:
@@ -80,3 +86,19 @@ class SubscribeApi:
             'id': subscribe_id,
             'deep_delete': deep_delete
         })
+
+    def sub_by_tmdb(self, media_type: MediaType, tmdb_id: int, season_number: Optional[int] = None):
+        params = {}
+        if media_type:
+            params.update({'media_type': media_type.value})
+        if tmdb_id:
+            params.update({'tmdb_id': tmdb_id})
+        if season_number is not None:
+            params.update({'season_number': season_number})
+        self._session.get('subscribe.sub_tmdb', params=params)
+
+    def sub_by_douban(self, douban_id: int, filter_name: Optional[str] = None):
+        params = {'id': douban_id}
+        if filter_name:
+            params.update({'filter_name': filter_name})
+        self._session.get('subscribe.sub_douban', params=params)

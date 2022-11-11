@@ -12,7 +12,7 @@ with open('requirements.txt') as handle:
             requirements.append(package)
 setup(
     name='movie-bot-api',
-    version='0.0.7',
+    version='0.0.8',
     author='yee',
     author_email='yipengfei329@gmail.com',
     url='https://github.com/pofey/movie-bot-api',

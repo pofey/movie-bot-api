@@ -62,7 +62,7 @@ class MediaMetaSelect:
                 title = self.douban.cn_name
             if title == '未知电视剧' or title == '未知电影':
                 title = None
-        if self.tmdb:
+        if self.tmdb and not title:
             if isinstance(self.tmdb, TmdbMovie):
                 title = self.tmdb.title
             elif isinstance(self.tmdb, TmdbTV):

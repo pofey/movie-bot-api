@@ -1,2 +1,2 @@
-SERVER_URL = 'https://mr.yee.one'
-ACCESS_KEY = 'dfyqYWCFntrMBi973w12EsxcQKbehvLX'
+SERVER_URL = 'http://127.0.0.1:1329'
+ACCESS_KEY = 'iKJbh9eIWSzmrvy0fGp1cN768oAZUO2D'

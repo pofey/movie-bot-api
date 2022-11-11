@@ -1,5 +1,6 @@
 from moviebotapi.core.session import Session
 from moviebotapi.douban import DoubanApi
+from moviebotapi.notify import NotifyApi
 from moviebotapi.scraper import ScraperApi
 from moviebotapi.site import SiteApi
 from moviebotapi.subscribe import SubscribeApi
@@ -14,6 +15,7 @@ class MovieBotServer:
     douban: DoubanApi
     tmdb: TmdbApi
     site: SiteApi
+    notify: NotifyApi
 
     def __init__(self, session: Session = None):
         if session:
@@ -26,3 +28,4 @@ class MovieBotServer:
         self.douban = DoubanApi(session)
         self.tmdb = TmdbApi(session)
         self.site = SiteApi(session)
+        self.notify = NotifyApi(session)

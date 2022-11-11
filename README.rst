@@ -1,5 +1,5 @@
-Movie Bot智能影音机器人Python API
-==========
+MovieBot Python API
+====================
 
 .. image:: https://img.shields.io/pypi/v/movie-bot-api.svg
    :target: https://img.shields.io/pypi/v/movie-bot-api.svg
@@ -8,7 +8,7 @@ Movie Bot智能影音机器人Python API
    :target: https://pypi.python.org/pypi/movie-bot-api
    :alt: PyPI supported Python versions
 
-易于使用的，灵活的，可扩展的，Movie Bot官方Python API包装器
+易于使用的，灵活的，可扩展的，Movie Bot智能影音机器人官方Python API包装器
 
 安装
 -------------
@@ -21,5 +21,3 @@ Movie Bot智能影音机器人Python API
 
     # Windows
     py -3 -m pip install -U movie-bot-api
-
-.. code:: sh

@@ -2,6 +2,7 @@ from typing import Optional, List, Dict, Union
 
 from moviebotapi import Session
 from moviebotapi.core import utils
+from moviebotapi.core.decorators import ignore_attr_not_exists
 from moviebotapi.core.models import MediaType
 
 
@@ -32,6 +33,7 @@ class SpokenLanguages:
         utils.copy_value(data, self)
 
 
+@ignore_attr_not_exists
 class TmdbMovie:
     id: int
     imdb_id: str
@@ -104,6 +106,7 @@ class Season:
         utils.copy_value(data, self)
 
 
+@ignore_attr_not_exists
 class TmdbTV:
     name: str
     original_name: str

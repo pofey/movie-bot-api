@@ -16,7 +16,6 @@ class User:
     bark_url: str
     avatar: str
     role: int
-    user: str
     pushdeer_key: str
     score_rule_name: str
     password: str

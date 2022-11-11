@@ -8,7 +8,18 @@ from moviebotapi.user import UserApi
 
 
 class MovieBotServer:
-    def __init__(self, session: Session):
+    user: UserApi
+    subscribe: SubscribeApi
+    scraper: ScraperApi
+    douban: DoubanApi
+    tmdb: TmdbApi
+    site: SiteApi
+
+    def __init__(self, session: Session = None):
+        if session:
+            self.set_session(session)
+
+    def set_session(self, session: Session):
         self.user = UserApi(session)
         self.subscribe = SubscribeApi(session)
         self.scraper = ScraperApi(session)

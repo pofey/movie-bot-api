@@ -86,8 +86,23 @@ class Network:
     name: str
     logo_path: str
     origin_country: str
+
     def __init__(self, data: Dict):
         utils.copy_value(data, self)
+
+
+class Season:
+    air_date: str
+    episode_count: int
+    id: int
+    name: str
+    overview: str
+    poster_path: str
+    season_number: int
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
 
 class TmdbTV:
     name: str
@@ -121,6 +136,7 @@ class TmdbTV:
     last_episode_to_air: EpisodeMeta
     next_episode_to_air: EpisodeMeta
     networks: List[Network]
+    seasons: List[Season]
 
     def __init__(self, data: Dict):
         utils.copy_value(data, self)

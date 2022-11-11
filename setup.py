@@ -12,7 +12,7 @@ with open('requirements.txt') as handle:
             requirements.append(package)
 setup(
     name='movie-bot-api',
-    version='0.0.4',
+    version='0.0.6',
     author='yee',
     author_email='yipengfei329@gmail.com',
     url='https://github.com/pofey/movie-bot-api',
@@ -21,6 +21,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     keywords=['movie bot', 'movie robot'],
-    packages=['moviebotapi','moviebotapi.core'],
-    install_requires=requirements
+    packages=['moviebotapi', 'moviebotapi.core'],
+    install_requires=requirements,
+    include_package_data=True
 )

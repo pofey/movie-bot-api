@@ -6,6 +6,7 @@ from moviebotapi.site import SiteApi
 from moviebotapi.subscribe import SubscribeApi
 from moviebotapi.tmdb import TmdbApi
 from moviebotapi.user import UserApi
+from moviebotapi.configapi import ConfigApi
 
 
 class MovieBotServer:
@@ -16,12 +17,14 @@ class MovieBotServer:
     tmdb: TmdbApi
     site: SiteApi
     notify: NotifyApi
+    config: ConfigApi
 
     def __init__(self, session: Session = None):
         if session:
             self.set_session(session)
 
     def set_session(self, session: Session):
+        self.config = ConfigApi(session)
         self.user = UserApi(session)
         self.subscribe = SubscribeApi(session)
         self.scraper = ScraperApi(session)

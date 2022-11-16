@@ -26,14 +26,19 @@ def string_to_number(text):
             return None
 
 
-def copy_value(source: Dict, target: object) -> None:
+def name_convert_to_camel(name: str) -> str:
+    """下划线转驼峰(小驼峰)"""
+    return re.sub(r'(_[a-z])', lambda x: x.group(1)[1].upper(), name)
+
+
+def copy_value(source: Dict, target: object, camel_case=False) -> None:
     if not source:
         return
     if not target or not target.__annotations__:
         return
     for name in target.__annotations__:
         anno = target.__annotations__[name]
-        setattr(target, name, parse_value(anno, source.get(name)))
+        setattr(target, name, parse_value(anno, source.get(name_convert_to_camel(name) if camel_case else name)))
 
 
 def _list_value(value):

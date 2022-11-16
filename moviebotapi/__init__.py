@@ -1,5 +1,6 @@
 from moviebotapi.core.session import Session
 from moviebotapi.douban import DoubanApi
+from moviebotapi.meta import MetaApi
 from moviebotapi.notify import NotifyApi
 from moviebotapi.scraper import ScraperApi
 from moviebotapi.site import SiteApi
@@ -7,6 +8,7 @@ from moviebotapi.subscribe import SubscribeApi
 from moviebotapi.tmdb import TmdbApi
 from moviebotapi.user import UserApi
 from moviebotapi.configapi import ConfigApi
+from moviebotapi.core.common import CommonApi
 
 
 class MovieBotServer:
@@ -18,6 +20,8 @@ class MovieBotServer:
     site: SiteApi
     notify: NotifyApi
     config: ConfigApi
+    meta: MetaApi
+    common: CommonApi
 
     def __init__(self, session: Session = None):
         if session:
@@ -32,3 +36,5 @@ class MovieBotServer:
         self.tmdb = TmdbApi(session)
         self.site = SiteApi(session)
         self.notify = NotifyApi(session)
+        self.meta = MetaApi(session)
+        self.common = CommonApi(session)

@@ -7,8 +7,8 @@ from moviebotapi.site import SiteApi
 from moviebotapi.subscribe import SubscribeApi
 from moviebotapi.tmdb import TmdbApi
 from moviebotapi.user import UserApi
-from moviebotapi.configapi import ConfigApi
-from moviebotapi.core.common import CommonApi
+from moviebotapi.config import ConfigApi
+from moviebotapi.common import CommonApi
 
 
 class MovieBotServer:

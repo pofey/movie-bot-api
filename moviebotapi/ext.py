@@ -121,9 +121,10 @@ class MediaMetaSelect:
                 if self.tmdb.release_date:
                     return self.tmdb.release_date[0:4]
                 else:
-                    return None
+                    return
             else:
-                return self._get_tmdb_tv_date(self.tmdb)[0:4]
+                tv_data = self._get_tmdb_tv_date(self.tmdb)
+                return tv_data[0:4] if tv_data else None
 
     @property
     def release_date(self):

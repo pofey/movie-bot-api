@@ -1,6 +1,6 @@
 import datetime
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from moviebotapi import Session
 from moviebotapi.core import utils
@@ -62,6 +62,36 @@ class Subscribe:
         self._api.delete(self.id, deep_delete)
 
 
+class Filter:
+    filter_name: str
+    priority: int
+    download_mode: int
+    apply_media_type: List[MediaType]
+    apply_genres: List[str]
+    apply_country: List[str]
+    apply_min_year: int
+    apply_max_year: int
+    media_source: List[str]
+    resolution: List[str]
+    media_codes: List[str]
+    has_cn: bool
+    has_special: bool
+    min_size: int
+    max_size: int
+    min_seeders: int
+    max_seeders: int
+    free_only: bool
+    pass_hr: bool
+    exclude_keyword: str
+    include_keyword: str
+
+    def __init__(self, data: Dict, api: 'SubscribeApi'):
+        utils.copy_value(data, self)
+        self._api = api
+        self.apply_genres = utils.parse_value(List[str], data.get('apply_cate'))
+        self.apply_country = utils.parse_value(List[str], data.get('apply_area'))
+
+
 class SubscribeApi:
     def __init__(self, session: Session):
         self._session: Session = session
@@ -104,3 +134,9 @@ class SubscribeApi:
         if filter_name:
             params.update({'filter_name': filter_name})
         self._session.get('subscribe.sub_douban', params=params)
+
+    def get_filters(self):
+        list_ = self._session.get('subscribe.get_filters')
+        if not list_:
+            return []
+        return [Filter(x, self) for x in list_]

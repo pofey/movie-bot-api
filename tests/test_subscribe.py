@@ -19,3 +19,7 @@ def test_get():
 
 def test_sub():
     server.subscribe.sub_by_douban(26654184)
+
+
+def test_get_filters():
+    server.subscribe.get_filters()

@@ -9,6 +9,7 @@ from moviebotapi.tmdb import TmdbApi
 from moviebotapi.user import UserApi
 from moviebotapi.config import ConfigApi
 from moviebotapi.common import CommonApi
+from moviebotapi.amr import AmrApi
 
 
 class MovieBotServer:
@@ -22,6 +23,7 @@ class MovieBotServer:
     config: ConfigApi
     meta: MetaApi
     common: CommonApi
+    amr: AmrApi
 
     def __init__(self, session: Session = None):
         if session:
@@ -38,3 +40,4 @@ class MovieBotServer:
         self.notify = NotifyApi(session)
         self.meta = MetaApi(session)
         self.common = CommonApi(session)
+        self.amr = AmrApi(session)

@@ -52,6 +52,10 @@ class SearchResultItem:
 
     def __init__(self, data: Dict):
         utils.copy_value(data, self)
+        if 'first_air_date' in data:
+            self.release_date = utils.parse_value(str, data.get('first_air_date'))
+        else:
+            self.release_date = utils.parse_value(str, data.get('release_date'))
 
 
 class SearchResult:

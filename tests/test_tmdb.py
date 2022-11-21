@@ -17,4 +17,4 @@ def test_search():
 
 
 def test_search_multi():
-    server.tmdb.search_multi('活着')
+    server.tmdb.search_multi('周星驰')

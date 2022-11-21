@@ -58,10 +58,22 @@ class SearchResult:
     page: int
     total_pages: int
     total_results: int
-    results: List[SearchResultItem]
+    results: List[Union[SearchResultItem, "TmdbPerson"]]
 
     def __init__(self, data: Dict):
-        utils.copy_value(data, self)
+        self.page = utils.parse_value(int, data.get('page'))
+        self.total_pages = utils.parse_value(int, data.get('total_pages'))
+        self.total_results = utils.parse_value(int, data.get('total_results'))
+        if data.get('results'):
+            res = []
+            for item in data.get('results'):
+                if item.get('media_type') == 'person':
+                    res.append(TmdbPerson(item))
+                else:
+                    res.append(SearchResultItem(item))
+            self.results = res
+        else:
+            self.results = []
 
 
 @ignore_attr_not_exists
@@ -176,6 +188,20 @@ class TmdbTV:
         utils.copy_value(data, self)
 
 
+class TmdbPerson:
+    adult: bool
+    gender: int
+    id: int
+    known_for: List[SearchResultItem]
+    known_for_department: str
+    name: str
+    popularity: float
+    profile_path: str
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
 class TmdbApi:
     def __init__(self, session: Session):
         self._session: Session = session
@@ -211,7 +237,8 @@ class TmdbApi:
             result.append(SearchResultItem(item))
         return result
 
-    def search_multi(self, query: str, language: Optional[str] = None, page: Optional[int] = None):
+    def search_multi(self, query: str, language: Optional[str] = None, page: Optional[int] = None) -> List[
+        Union[SearchResultItem, TmdbPerson]]:
         res = self._session.get('tmdb.search_multi', {
             'query': query,
             'language': language,

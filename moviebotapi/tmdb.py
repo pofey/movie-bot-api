@@ -56,6 +56,14 @@ class SearchResultItem:
             self.release_date = utils.parse_value(str, data.get('first_air_date'))
         else:
             self.release_date = utils.parse_value(str, data.get('release_date'))
+        if 'original_name' in data:
+            self.original_title = utils.parse_value(str, data.get('original_name'))
+        else:
+            self.original_title = utils.parse_value(str, data.get('original_title'))
+        if 'title' in data:
+            self.title = utils.parse_value(str, data.get('title'))
+        else:
+            self.title = utils.parse_value(str, data.get('name'))
 
 
 class SearchResult:

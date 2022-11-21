@@ -33,6 +33,37 @@ class SpokenLanguages:
         utils.copy_value(data, self)
 
 
+class SearchResultItem:
+    adult: bool
+    backdrop_path: str
+    genre_ids: List[int]
+    id: int
+    media_type: MediaType
+    original_language: str
+    original_title: str
+    overview: str
+    popularity: float
+    poster_path: str
+    release_date: str
+    title: str
+    video: bool
+    vote_average: float
+    vote_count: int
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
+class SearchResult:
+    page: int
+    total_pages: int
+    total_results: int
+    results: List[SearchResultItem]
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
 @ignore_attr_not_exists
 class TmdbMovie:
     id: int
@@ -164,3 +195,28 @@ class TmdbApi:
             return TmdbMovie(meta)
         else:
             return TmdbTV(meta)
+
+    def search(self, media_type: MediaType, query: str, year: Optional[int] = None, language: Optional[str] = None):
+        res = self._session.get('tmdb.search', {
+            'media_type': media_type.value,
+            'query': query,
+            'language': language,
+            'year': year
+        })
+        if not res:
+            return
+        result = []
+        for item in res:
+            item['media_type'] = media_type.value
+            result.append(SearchResultItem(item))
+        return result
+
+    def search_multi(self, query: str, language: Optional[str] = None, page: Optional[int] = None):
+        res = self._session.get('tmdb.search_multi', {
+            'query': query,
+            'language': language,
+            'page': page
+        })
+        if not res:
+            return
+        return SearchResult(res)

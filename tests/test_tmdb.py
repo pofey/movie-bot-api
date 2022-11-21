@@ -11,3 +11,10 @@ def test_get():
     meta = MediaMetaSelect(tmdb=server.tmdb.get(MediaType.Movie, 496243))
     assert meta
 
+
+def test_search():
+    server.tmdb.search(MediaType.Movie, '子弹列车')
+
+
+def test_search_multi():
+    server.tmdb.search_multi('活着')

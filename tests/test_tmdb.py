@@ -18,3 +18,7 @@ def test_search():
 
 def test_search_multi():
     server.tmdb.search_multi('权利的堡垒')
+
+
+def test_get_aka_names():
+    server.tmdb.get_aka_names(MediaType.Movie, 985939)

@@ -212,6 +212,14 @@ class TmdbPerson:
         utils.copy_value(data, self)
 
 
+class TmdbAkaName:
+    iso_3166_1: str
+    title: str
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
 class TmdbApi:
     def __init__(self, session: Session):
         self._session: Session = session
@@ -257,3 +265,12 @@ class TmdbApi:
         if not res:
             return
         return SearchResult(res)
+
+    def get_aka_names(self, media_type: MediaType, tmdb_id: int) -> List[TmdbAkaName]:
+        list_ = self._session.get('tmdb.get_aka_names', {
+            'media_type': media_type.value,
+            'tmdb_id': tmdb_id
+        })
+        if not list_:
+            return []
+        return [TmdbAkaName(x) for x in list_]

@@ -88,7 +88,6 @@ class SearchResult:
             self.results = []
 
 
-@ignore_attr_not_exists
 class TmdbMovie:
     id: int
     imdb_id: str
@@ -161,7 +160,6 @@ class Season:
         utils.copy_value(data, self)
 
 
-@ignore_attr_not_exists
 class TmdbTV:
     name: str
     original_name: str

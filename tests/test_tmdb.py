@@ -8,7 +8,7 @@ server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
 def test_get():
-    meta = MediaMetaSelect(tmdb=server.tmdb.get(MediaType.Movie, 496243))
+    meta = MediaMetaSelect(tmdb=server.tmdb.get(MediaType.TV, 86163))
     assert meta
 
 
@@ -17,4 +17,4 @@ def test_search():
 
 
 def test_search_multi():
-    server.tmdb.search_multi('人世间')
+    server.tmdb.search_multi('权利的堡垒')

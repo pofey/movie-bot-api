@@ -6,7 +6,7 @@ from httpx import Timeout
 
 from moviebotapi.core.exceptions import ApiErrorException, NetworkErrorException, IllegalAuthorization
 
-UA = 'moviebotapi/0.0.15'
+UA = 'moviebotapi/0.0.16'
 URLTypes = Union["URL", str]
 HeaderTypes = Union[
     "Headers",

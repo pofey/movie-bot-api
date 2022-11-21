@@ -237,8 +237,8 @@ class TmdbApi:
             result.append(SearchResultItem(item))
         return result
 
-    def search_multi(self, query: str, language: Optional[str] = None, page: Optional[int] = None) -> List[
-        Union[SearchResultItem, TmdbPerson]]:
+    def search_multi(self, query: str, language: Optional[str] = None, page: Optional[int] = None) -> Optional[
+        SearchResult]:
         res = self._session.get('tmdb.search_multi', {
             'query': query,
             'language': language,

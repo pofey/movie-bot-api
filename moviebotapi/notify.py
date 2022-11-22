@@ -24,7 +24,7 @@ class NotifyApi:
         })
 
     def send_message_by_tmpl(self, title: str, body: str, context: Dict, to_uid: Optional[int] = None):
-        self._session.post('notify.send_message_by_tmpl_name', {
+        self._session.post('notify.send_message_by_tmpl', {
             'to_uid': to_uid,
             'title': title,
             'body': body,

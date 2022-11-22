@@ -8,7 +8,7 @@ server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
 def test_get():
-    meta = MediaMetaSelect(tmdb=server.tmdb.get(MediaType.TV, 86163))
+    meta = MediaMetaSelect(tmdb=server.tmdb.get(MediaType.Movie, 436270))
     assert meta
 
 

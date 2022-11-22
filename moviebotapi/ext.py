@@ -17,10 +17,10 @@ class MediaMetaSelect:
         if self.tmdb:
             if not self.tmdb.production_countries and not self.tmdb.origin_country:
                 return ['其他']
-            if self.tmdb.origin_country:
+            if hasattr(self.tmdb, 'origin_country') and self.tmdb.origin_country:
                 for c in self.tmdb.origin_country:
                     country.append(utils.Countries.get(c))
-            if len(country) == 0 and self.tmdb.production_countries:
+            if len(country) == 0 and hasattr(self.tmdb, 'production_countries') and self.tmdb.production_countries:
                 for c in self.tmdb.production_countries:
                     country.append(utils.Countries.get(c.get('iso_3166_1')))
         if not country and self.douban:

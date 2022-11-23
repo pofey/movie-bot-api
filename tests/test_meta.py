@@ -12,3 +12,11 @@ def test_get_cast_crew_by_douban():
 
 def test_get_cast_crew_by_tmdb():
     assert server.meta.get_cast_crew_by_tmdb(MediaType.TV, 60059)
+
+
+def test_get_media_by_tmdb_id():
+    assert server.meta.get_media_by_tmdb(MediaType.TV, 60059)
+
+
+def test_get_media_by_douban_id():
+    assert server.meta.get_media_by_douban(MediaType.Movie, 1889243)

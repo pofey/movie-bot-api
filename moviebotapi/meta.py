@@ -55,7 +55,7 @@ class MediaMeta:
     rating: float
     release_year: int
     # 首映日期
-    premiere_data: int
+    premiere_date: int
     # 影片时常，单位分钟
     duration: int
     # 封面图

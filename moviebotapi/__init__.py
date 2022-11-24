@@ -1,5 +1,6 @@
 from moviebotapi.core.session import Session
 from moviebotapi.douban import DoubanApi
+from moviebotapi.library import LibraryApi
 from moviebotapi.meta import MetaApi
 from moviebotapi.notify import NotifyApi
 from moviebotapi.scraper import ScraperApi
@@ -13,6 +14,7 @@ from moviebotapi.amr import AmrApi
 
 
 class MovieBotServer:
+    session: Session
     user: UserApi
     subscribe: SubscribeApi
     scraper: ScraperApi
@@ -24,12 +26,14 @@ class MovieBotServer:
     meta: MetaApi
     common: CommonApi
     amr: AmrApi
+    library: LibraryApi
 
     def __init__(self, session: Session = None):
         if session:
             self.set_session(session)
 
     def set_session(self, session: Session):
+        self.session = session
         self.config = ConfigApi(session)
         self.user = UserApi(session)
         self.subscribe = SubscribeApi(session)
@@ -41,3 +45,4 @@ class MovieBotServer:
         self.meta = MetaApi(session)
         self.common = CommonApi(session)
         self.amr = AmrApi(session)
+        self.library = LibraryApi(session)

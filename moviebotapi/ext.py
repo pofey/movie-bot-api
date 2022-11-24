@@ -15,7 +15,8 @@ class MediaMetaSelect:
     def country(self):
         country: List[str] = list()
         if self.tmdb:
-            if not self.tmdb.production_countries and not self.tmdb.origin_country:
+            if hasattr(self.tmdb, 'production_countries') and not self.tmdb.production_countries and hasattr(self.tmdb,
+                                                                                                             'origin_country') and not self.tmdb.origin_country:
                 return ['其他']
             if hasattr(self.tmdb, 'origin_country') and self.tmdb.origin_country:
                 for c in self.tmdb.origin_country:

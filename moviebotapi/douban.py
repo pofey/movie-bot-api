@@ -109,11 +109,36 @@ class DoubanRankingItem:
         self.media_type = MediaType.get(data.get('type'))
 
 
+class ApiSearchItem:
+    media_type: MediaType
+    douban_id: int
+    rating: float
+    title: str
+    app_url: str
+    small_poster_url: str
+    year: int
+
+    def __init__(self, data: Dict):
+        if data.get('target_type'):
+            self.media_type = MediaType.Movie if data.get('target_type') == 'movie' else MediaType.TV
+        self.douban_id = utils.parse_value(int, data.get('target_id'))
+        if data.get('target'):
+            t = data.get('target')
+            self.title = utils.parse_value(str, t.get('title'))
+            self.app_url = utils.parse_value(str, t.get('uri'))
+            self.small_poster_url = utils.parse_value(str, t.get('cover_url'))
+            self.year = utils.parse_value(int, t.get('year'))
+            self.rating = utils.parse_value(float, t.get('rating').get('value') if t.get('rating') else None)
+
+
 class DoubanApi:
     def __init__(self, session: Session):
         self._session: Session = session
 
     def get(self, douban_id: int) -> Optional[DoubanMedia]:
+        """
+        根据豆瓣编号获取豆瓣详情信息
+        """
         meta = self._session.get('douban.get', {
             'douban_id': douban_id
         })
@@ -122,6 +147,9 @@ class DoubanApi:
         return DoubanMedia(meta)
 
     def search(self, keyword: str) -> List[DoubanSearchResult]:
+        """
+        搜索豆瓣移动端网页解析结果，此搜索结果中没有年份
+        """
         result = self._session.get('movie.search_douban', {
             'keyword': keyword
         })
@@ -131,6 +159,9 @@ class DoubanApi:
 
     def list_ranking(self, ranking_type: DoubanRankingType, proxy_pic: bool = False) -> Optional[
         List[DoubanRankingItem]]:
+        """
+        获取豆瓣榜单数据
+        """
         res = self._session.get('douban.list_ranking', {
             'ranking_type': ranking_type.value,
             'proxy_pic': proxy_pic
@@ -138,3 +169,19 @@ class DoubanApi:
         if not res:
             return []
         return [DoubanRankingItem(x) for x in res.get('result')]
+
+    def use_api_search(self, keyword: str, count: Optional[int] = None) -> List[ApiSearchItem]:
+        """
+        使用豆瓣移动端API进行搜索，此接口会含有年份信息
+        """
+        res = self._session.get('douban.use_api_search', {
+            'keyword': keyword,
+            'count': count
+        })
+        if not res or not res.get('items'):
+            return []
+        list_ = res.get('items')
+        result = []
+        for item in list_:
+            result.append(ApiSearchItem(item))
+        return result

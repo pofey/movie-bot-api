@@ -19,3 +19,7 @@ def test_search():
 
 def test_list_ranking():
     assert server.douban.list_ranking(DoubanRankingType.movie_real_time_hotest)
+
+
+def test_use_api_search():
+    assert server.douban.use_api_search('子弹列车')

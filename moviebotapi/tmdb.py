@@ -205,8 +205,23 @@ class TmdbPerson:
     known_for: List[SearchResultItem]
     known_for_department: str
     name: str
+    original_name: str
     popularity: float
     profile_path: str
+    credit_id: str
+    department: str
+    job: str
+    character: str
+    order: int
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
+class TmdbCredits:
+    id: int
+    cast: List[TmdbPerson]
+    crew: List[TmdbPerson]
 
     def __init__(self, data: Dict):
         utils.copy_value(data, self)
@@ -220,12 +235,27 @@ class TmdbAkaName:
         utils.copy_value(data, self)
 
 
+class TmdbExternalIds:
+    id: int
+    imdb_id: str
+    wikidata_id: str
+    facebook_id: str
+    instagram_id: str
+    twitter_id: str
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
 class TmdbApi:
     def __init__(self, session: Session):
         self._session: Session = session
 
     def get(self, media_type: MediaType, tmdb_id: int, language: Optional[str] = None) -> Union[
         TmdbMovie, TmdbTV, None]:
+        """
+        根据编号获取详情
+        """
         if not language:
             language = 'zh-CN'
         meta = self._session.get('tmdb.get', {
@@ -240,7 +270,35 @@ class TmdbApi:
         else:
             return TmdbTV(meta)
 
+    def get_external_ids(self, media_type: MediaType, tmdb_id: int):
+        """
+        根据tmdb id获取其他媒体平台的id
+        """
+        res = self._session.get('tmdb.get_external_ids', {
+            'media_type': media_type.value,
+            'tmdb_id': tmdb_id
+        })
+        if not res:
+            return
+        return TmdbExternalIds(res)
+
+    def get_credits(self, media_type: MediaType, tmdb_id: int, season_number: Optional[int] = None):
+        """
+        获取演员，剧组成员信息
+        """
+        res = self._session.get('tmdb.get_credits', {
+            'media_type': media_type.value,
+            'tmdb_id': tmdb_id,
+            'season_number': season_number
+        })
+        if not res:
+            return
+        return TmdbCredits(res)
+
     def search(self, media_type: MediaType, query: str, year: Optional[int] = None, language: Optional[str] = None):
+        """
+        根据特定的媒体类型搜索
+        """
         res = self._session.get('tmdb.search', {
             'media_type': media_type.value,
             'query': query,
@@ -257,6 +315,9 @@ class TmdbApi:
 
     def search_multi(self, query: str, language: Optional[str] = None, page: Optional[int] = None) -> Optional[
         SearchResult]:
+        """
+        混合搜索，电影、剧集、演员都搜
+        """
         res = self._session.get('tmdb.search_multi', {
             'query': query,
             'language': language,

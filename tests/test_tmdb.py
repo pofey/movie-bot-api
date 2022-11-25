@@ -22,3 +22,11 @@ def test_search_multi():
 
 def test_get_aka_names():
     server.tmdb.get_aka_names(MediaType.Movie, 985939)
+
+
+def test_get_external_ids():
+    server.tmdb.get_external_ids(MediaType.TV, 60059)
+
+
+def test_get_credits():
+    server.tmdb.get_credits(MediaType.TV, 60059, 6)

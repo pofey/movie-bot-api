@@ -24,8 +24,10 @@ class MediaNameMeta:
 
 class MetaSearchResult:
     tmdb_id: int = None
+    douban_id: int = None
     cn_name: str = None
     original_name: str = None
+    release_year: int = None
     release_date: str = None
     media_type: MediaType = None
     season_number: int = None
@@ -83,6 +85,21 @@ class AmrApi:
         """
         res = self._session.get('amr.analysis_filepath', {
             'string': filepath
+        })
+        if not res:
+            return
+        return MetaSearchResult(res)
+
+    def analysis_douban_meta(self, cn_name: Optional[str], en_name: Optional[str] = None, year: Optional[int] = None,
+                             season_number: Optional[int] = None):
+        """
+        根据提供的信息，分析出豆瓣的关联影片
+        """
+        res = self._session.get('amr.analysis_douban_meta', {
+            'cn_name': cn_name,
+            'en_name': en_name,
+            'year': year,
+            'season_number': season_number
         })
         if not res:
             return

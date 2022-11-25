@@ -17,3 +17,7 @@ def test_parse_name_meta_by_filepath():
 
 def test_analysis_string():
     print(server.amr.analysis_string('人世间.CCTV1.A.Lifelong.Journey.S01E01.2022.1080i.HDTV.H264.AC3-iLoveTV').__dict__)
+
+
+def test_analysis_douban_meta():
+    print(server.amr.analysis_douban_meta('人世间', year=2022).__dict__)

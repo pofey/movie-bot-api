@@ -119,6 +119,26 @@ class TmdbMovie:
         utils.copy_value(data, self)
 
 
+class TmdbPerson:
+    adult: bool
+    gender: int
+    id: int
+    known_for: List[SearchResultItem]
+    known_for_department: str
+    name: str
+    original_name: str
+    popularity: float
+    profile_path: str
+    credit_id: str
+    department: str
+    job: str
+    character: str
+    order: int
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
 class EpisodeMeta:
     air_date: str
     episode_number: int
@@ -132,6 +152,8 @@ class EpisodeMeta:
     still_path: str
     vote_average: float
     vote_count: int
+    crew: List[TmdbPerson]
+    guest_stars: List[TmdbPerson]
 
     def __init__(self, data: Dict):
         utils.copy_value(data, self)
@@ -193,26 +215,6 @@ class TmdbTV:
     next_episode_to_air: EpisodeMeta
     networks: List[Network]
     seasons: List[Season]
-
-    def __init__(self, data: Dict):
-        utils.copy_value(data, self)
-
-
-class TmdbPerson:
-    adult: bool
-    gender: int
-    id: int
-    known_for: List[SearchResultItem]
-    known_for_department: str
-    name: str
-    original_name: str
-    popularity: float
-    profile_path: str
-    credit_id: str
-    department: str
-    job: str
-    character: str
-    order: int
 
     def __init__(self, data: Dict):
         utils.copy_value(data, self)
@@ -335,3 +337,15 @@ class TmdbApi:
         if not list_:
             return []
         return [TmdbAkaName(x) for x in list_]
+
+    def get_tv_episode(self, tmdb_id: int, season_number: int, episode_number: int, language: Optional[str] = None) -> \
+    Optional[EpisodeMeta]:
+        res = self._session.get('tmdb.get_tv_episode', {
+            'tmdb_id': tmdb_id,
+            'season_number': season_number,
+            'episode_number': episode_number,
+            'language': language
+        })
+        if not res:
+            return
+        return EpisodeMeta(res)

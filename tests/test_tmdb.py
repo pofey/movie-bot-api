@@ -30,3 +30,7 @@ def test_get_external_ids():
 
 def test_get_credits():
     server.tmdb.get_credits(MediaType.TV, 60059, 6)
+
+
+def test_get_tv_episode():
+    server.tmdb.get_tv_episode(60059, 6, 1)

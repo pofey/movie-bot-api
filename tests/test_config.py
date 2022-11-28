@@ -6,5 +6,7 @@ from tests.constant import SERVER_URL, ACCESS_KEY
 server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
-def test_get_base():
-    print(server.config)
+def test_get_and_set():
+    free_download = server.config.free_download
+    free_download.enable = False
+    free_download.save()

@@ -20,6 +20,29 @@ class DoubanConfig:
         })
 
 
+class FreeDownloadConfig:
+    available_space: int
+    avg_statistics_period: int
+    enable: bool
+    maximum_active_torrent: int
+    save_path: str
+    upload_mbps_maximum: int
+
+    def __init__(self, data: Dict, session: Session):
+        utils.copy_value(data, self)
+        self._ = session
+
+    def save(self):
+        self._.post('setting.save_free_download', json={
+            'enable': self.enable,
+            'save_path': self.save_path,
+            'available_space': self.available_space,
+            'avg_statistics_period': self.avg_statistics_period,
+            'upload_mbps_maximum': self.upload_mbps_maximum,
+            'maximum_active_torrent': self.maximum_active_torrent
+        })
+
+
 class ConfigApi:
     def __init__(self, session: Session):
         self._session: Session = session
@@ -27,3 +50,7 @@ class ConfigApi:
     @property
     def douban(self):
         return DoubanConfig(self._session.get('setting.get_douban'), self._session)
+
+    @property
+    def free_download(self):
+        return FreeDownloadConfig(self._session.get('setting.get_free_download'), self._session)

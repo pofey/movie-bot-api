@@ -11,6 +11,7 @@ from moviebotapi.user import UserApi
 from moviebotapi.config import ConfigApi
 from moviebotapi.common import CommonApi
 from moviebotapi.amr import AmrApi
+from moviebotapi.auth import AuthApi
 
 
 class MovieBotServer:
@@ -27,6 +28,7 @@ class MovieBotServer:
     common: CommonApi
     amr: AmrApi
     library: LibraryApi
+    auth: AuthApi
 
     def __init__(self, session: Session = None):
         if session:
@@ -46,3 +48,4 @@ class MovieBotServer:
         self.common = CommonApi(session)
         self.amr = AmrApi(session)
         self.library = LibraryApi(session)
+        self.auth = AuthApi(session)

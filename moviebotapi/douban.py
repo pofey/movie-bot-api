@@ -147,17 +147,7 @@ class DoubanDailyMedia:
     app_url: str
 
     def __init__(self, data: Dict):
-        utils.copy_value(data, self)
-        # 将数据更正为统一格式(下划线)
-        self.show_date: str = utils.parse_value(str, data.get('showDate'))
-        self.media_type: str = utils.parse_value(str, data.get('mediaType'))
-        self.media_id: int = utils.parse_value(str, data.get('mediaId'))
-        self.douban_id: int = utils.parse_value(str, data.get('doubanId'))
-        self.tmdb_id: str = utils.parse_value(str, data.get('tmdbId'))
-        self.release_year: int = utils.parse_value(str, data.get('releaseYear'))
-        self.poster_url: str = utils.parse_value(str, data.get('posterUrl'))
-        self.background_url: str = utils.parse_value(str, data.get('backgroundUrl'))
-        self.app_url: str = utils.parse_value(str, data.get('appUrl'))
+        utils.copy_value(data, self, True)
 
 
 class DoubanApi:
@@ -214,11 +204,12 @@ class DoubanApi:
         for item in list_:
             result.append(ApiSearchItem(item))
         return result
-    def daily_media(self, douban_id: int) -> Optional[DoubanDailyMedia]:
+
+    def daily_media(self) -> Optional[DoubanDailyMedia]:
         """
         获取豆瓣每日推荐
         """
         meta = self._session.get('common.daily_media')
         if not meta:
             return
-        return DoubanDailyMedia(meta)    
+        return DoubanDailyMedia(meta)

@@ -23,3 +23,7 @@ def test_list_ranking():
 
 def test_use_api_search():
     assert server.douban.use_api_search('子弹列车')
+
+
+ def test_daily_media():
+    assert server.douban.daily_media()   

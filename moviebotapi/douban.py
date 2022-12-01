@@ -140,7 +140,7 @@ class DoubanDailyMedia:
     title: str
     comment: str
     release_year: int
-    rating: int
+    rating: float
     poster_url: str
     background_url: str
     url: str

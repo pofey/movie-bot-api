@@ -1,5 +1,6 @@
 from moviebotapi.core.session import Session
 from moviebotapi.douban import DoubanApi
+from moviebotapi.event import EventApi
 from moviebotapi.library import LibraryApi
 from moviebotapi.meta import MetaApi
 from moviebotapi.notify import NotifyApi
@@ -29,6 +30,7 @@ class MovieBotServer:
     amr: AmrApi
     library: LibraryApi
     auth: AuthApi
+    event: EventApi
 
     def __init__(self, session: Session = None):
         if session:
@@ -49,3 +51,4 @@ class MovieBotServer:
         self.amr = AmrApi(session)
         self.library = LibraryApi(session)
         self.auth = AuthApi(session)
+        self.event = EventApi(session)

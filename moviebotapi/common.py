@@ -24,3 +24,8 @@ class CommonApi:
             'key': key,
             'data': data
         })
+
+    def get_image_text(self, b64_img: str):
+        return self._session.post('common.get_image_text', {
+            'b64_image': b64_img
+        })

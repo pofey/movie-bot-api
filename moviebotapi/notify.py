@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Optional, Union, List
 
 from moviebotapi import Session
 
@@ -16,26 +16,32 @@ class NotifyApi:
     def __init__(self, session: Session):
         self._session: Session = session
 
-    def send_message_by_tmpl_name(self, template_name: str, context: Dict, to_uid: Optional[int] = None):
+    def send_message_by_tmpl_name(self, template_name: str, context: Dict, to_uid: Optional[int] = None,
+                                  to_channel_name: Union[str, List[str]] = None):
         self._session.post('notify.send_message_by_tmpl_name', {
             'to_uid': to_uid,
             'template_name': template_name,
-            'context': context
+            'context': context,
+            'to_channel_name': to_channel_name
         })
 
-    def send_message_by_tmpl(self, title: str, body: str, context: Dict, to_uid: Optional[int] = None):
+    def send_message_by_tmpl(self, title: str, body: str, context: Dict, to_uid: Optional[int] = None,
+                             to_channel_name: Union[str, List[str]] = None):
         self._session.post('notify.send_message_by_tmpl', {
             'to_uid': to_uid,
             'title': title,
             'body': body,
-            'context': context
+            'context': context,
+            'to_channel_name': to_channel_name
         })
 
-    def send_text_message(self, title: str, body: str, to_uid: Optional[int] = None):
+    def send_text_message(self, title: str, body: str, to_uid: Optional[int] = None,
+                          to_channel_name: Union[str, List[str]] = None):
         self._session.post('notify.send_text_message', {
             'to_uid': to_uid,
             'title': title,
-            'body': body
+            'body': body,
+            'to_channel_name': to_channel_name
         })
 
     def send_system_message(self, to_uid: Optional[int], title: str, message: str,

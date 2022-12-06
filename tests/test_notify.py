@@ -15,4 +15,4 @@ def test_send_message_by_tmpl():
         'a': "hello",
         'link_url': 'http://www.bing.com',
         'pic_url': 'https://www.curvearro.com/wp-content/uploads/sites/1/2020/10/Microsoft-Bing-Banner-1.jpg'
-    })
+    }, to_channel_name='qywx')

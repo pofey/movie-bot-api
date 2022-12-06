@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 import re
-from typing import Dict, List, _GenericAlias
+from typing import Dict, List, _GenericAlias, Optional
 
 import cn2an
 
@@ -39,6 +39,16 @@ def copy_value(source: Dict, target: object, camel_case=False) -> None:
     for name in target.__annotations__:
         anno = target.__annotations__[name]
         setattr(target, name, parse_value(anno, source.get(name_convert_to_camel(name) if camel_case else name)))
+
+
+def to_dict(obj: object) -> Optional[Dict]:
+    if not obj or not obj.__annotations__:
+        return
+    result = {}
+    for name in obj.__annotations__:
+        anno = obj.__annotations__[name]
+        result.update({name: parse_value(anno, getattr(obj, name))})
+    return result
 
 
 def _list_value(value):

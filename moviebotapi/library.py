@@ -35,3 +35,8 @@ class LibraryApi:
             'media_type': media_type.value,
             'library_paths': [utils.to_dict(x) for x in library_paths]
         })
+
+    def rename_by_path(self, path: str):
+        return self._session.post('library.rename_by_path', {
+            'path': path
+        })

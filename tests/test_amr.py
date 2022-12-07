@@ -12,7 +12,7 @@ def test_parse_name_meta_by_string():
 
 def test_parse_name_meta_by_filepath():
     print(server.amr.parse_name_meta_by_filepath(
-        '/media_source/蜘蛛侠：英雄归来.Spider-Man.Homecoming.2017.BluRay.2160p.x265.10bit.HDR.3Audio.mUHD-FRDS').__dict__)
+        '/Users/yee/workspace/test_media/download/this.is.us/Season 6/this.is.us.s06e05.720p.hdtv.x264-syncopy.mkv').__dict__)
 
 
 def test_analysis_string():

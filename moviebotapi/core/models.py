@@ -4,6 +4,7 @@ from enum import Enum
 class MediaType(str, Enum):
     Movie = 'Movie'
     TV = 'TV'
+    Collection = 'Collection'
 
     @staticmethod
     def get(value):
@@ -12,3 +13,5 @@ class MediaType(str, Enum):
             return MediaType.Movie
         if l in ['tv', 'series']:
             return MediaType.TV
+        if l == 'collection':
+            return MediaType.Collection

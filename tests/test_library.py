@@ -17,5 +17,9 @@ def test_stop_scanner():
 
 def test_add_library():
     path = MediaLibraryPath()
-    path.path = '/Volumes/media/电影/欧美'
-    server.library.add_library(MediaType.Movie, '欧美电影', [path])
+    path.path = '/Users/yee/workspace/test_media/download'
+    server.library.add_library(MediaType.Collection, '混合', [path])
+
+
+def test_rename_by_path():
+    server.library.rename_by_path('/Users/yee/workspace/test_media/download')

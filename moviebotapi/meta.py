@@ -118,13 +118,13 @@ class MetaApi:
             return
         return MediaMeta(res)
 
-    def get_media_by_douban(self, media_type: MediaType, tmdb_id: int):
+    def get_media_by_douban(self, media_type: MediaType, douban_id: int):
         """
         根据豆瓣编号获取自建影视元数据
         """
         res = self._session.get('meta.get_media_by_douban_id', {
             'media_type': media_type.value,
-            'douban_id': tmdb_id
+            'douban_id': douban_id
         })
         if not res:
             return

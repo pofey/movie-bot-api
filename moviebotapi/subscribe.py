@@ -57,6 +57,7 @@ class Subscribe:
         utils.copy_value(data, self)
         self._api = api
         self.season_number: int = utils.parse_value(int, data.get('season_index'))
+        self.media_type = utils.parse_value(MediaType, data.get('type'))
 
     def delete(self, deep_delete: bool = False):
         self._api.delete(self.id, deep_delete)

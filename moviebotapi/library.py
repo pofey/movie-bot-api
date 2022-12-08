@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List, Optional, Dict
 
 from moviebotapi import Session
@@ -12,6 +13,12 @@ class MediaLibraryPath:
     def __init__(self, data: Dict = None):
         if not data:
             utils.copy_value(data, self)
+
+
+class TransferMode(Enum):
+    HardLink = 'link'
+    Copy = 'copy'
+    Move = 'move'
 
 
 class LibraryApi:
@@ -39,4 +46,11 @@ class LibraryApi:
     def rename_by_path(self, path: str):
         return self._session.post('library.rename_by_path', {
             'path': path
+        })
+
+    def direct_transfer(self, src: str, dst: str, mode: TransferMode):
+        self._session.post('library.direct_transfer', {
+            'src': src,
+            'dst': dst,
+            'mode': mode.value
         })

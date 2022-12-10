@@ -20,3 +20,7 @@ def test_get_media_by_tmdb_id():
 
 def test_get_media_by_douban_id():
     assert server.meta.get_media_by_douban(MediaType.Movie, 1889243)
+
+
+def test_share_meta_from_id():
+    print(server.meta.share_meta_from_id(518896, 26353671))

@@ -129,3 +129,17 @@ class MetaApi:
         if not res:
             return
         return MediaMeta(res)
+
+    def share_meta_from_id(self, tmdb_id: int, douban_id: int, season_number: Optional[int] = None):
+        """
+        根据TMDB和豆瓣的影片编号，共享数据到自建服务器
+        :param tmdb_id: TMDB编号
+        :param douban_id: 豆瓣编号
+        :param season_number: 如果为剧集时，可以选择强制指定季，如果不填，则自动取豆瓣
+        :return:
+        """
+        return self._session.get('meta.share_meta_from_id', {
+            'tmdb_id': tmdb_id,
+            'douban_id': douban_id,
+            'season_number': season_number
+        })

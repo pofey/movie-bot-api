@@ -109,7 +109,7 @@ class MediaMetaSelect:
     def _get_tmdb_tv_date(tv: TmdbTV) -> Optional[str]:
         if tv.first_air_date:
             return tv.first_air_date
-        elif tv and tv.seasons:
+        elif tv and tv.seasons and tv.seasons[0].air_date:
             return tv.seasons[0].air_date[0:4]
         return
 

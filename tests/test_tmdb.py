@@ -34,3 +34,10 @@ def test_get_credits():
 
 def test_get_tv_episode():
     server.tmdb.get_tv_episode(60059, 6, 1)
+
+
+def test_request_api():
+    r = server.tmdb.request_api('/3/tv/73586/season/5', {
+        'language': 'zh-CN'
+    })
+    print(r)

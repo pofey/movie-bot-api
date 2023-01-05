@@ -114,6 +114,7 @@ class Site:
     upload_kpi: int
     proxies: str
     user_agent: str
+    domain: str
 
     def __init__(self, data: Dict, api: "SiteApi"):
         utils.copy_value(data, self)
@@ -161,7 +162,7 @@ class SiteApi:
         })
 
     def search_local(self, query: Union[SearchQuery, List[SearchQuery]],
-                     cate_level1: Optional[List[CateLevel1]] = None) -> Optional[List[Torrent]]:
+                     cate_level1: Optional[List[CateLevel1]] = None) -> List[Torrent]:
         if isinstance(query, SearchQuery):
             query = [{'key': query.key.value, 'value': query.value}]
         elif isinstance(query, list):
@@ -169,6 +170,19 @@ class SiteApi:
         torrents = self._session.post('site.search_local', {
             'query': query,
             'cate_level1': cate_level1
+        })
+        if not torrents:
+            return []
+        return [Torrent(x) for x in torrents]
+
+    def list_local_torrents(self, start_time: Optional[str] = None) -> List[Torrent]:
+        """
+        获取本地种子列表
+        :param start_time:
+        :return:
+        """
+        torrents = self._session.get('site.list_local_torrents', {
+            'start_time': start_time
         })
         if not torrents:
             return []

@@ -8,7 +8,7 @@ server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
 def test_list():
-    list_ = server.subscribe.list(MediaType.Movie,SubStatus.Subscribing)
+    list_ = server.subscribe.list(MediaType.Movie, SubStatus.Subscribing)
     assert list_
     return list_
 
@@ -24,3 +24,8 @@ def test_sub():
 
 def test_get_filters():
     server.subscribe.get_filters()
+
+
+def test_list_custom():
+    items = server.subscribe.list_custom_sub()
+    assert items

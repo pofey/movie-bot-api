@@ -25,3 +25,7 @@ def test_set():
 
 def test_search_local():
     assert server.site.search_local(SearchQuery(SearchType.Keyword, '子弹列车'))
+
+
+def test_list_local_torrents():
+    assert server.site.list_local_torrents()

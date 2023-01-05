@@ -339,7 +339,7 @@ class TmdbApi:
         return [TmdbAkaName(x) for x in list_]
 
     def get_tv_episode(self, tmdb_id: int, season_number: int, episode_number: int, language: Optional[str] = None) -> \
-    Optional[EpisodeMeta]:
+            Optional[EpisodeMeta]:
         res = self._session.get('tmdb.get_tv_episode', {
             'tmdb_id': tmdb_id,
             'season_number': season_number,
@@ -349,3 +349,9 @@ class TmdbApi:
         if not res:
             return
         return EpisodeMeta(res)
+
+    def request_api(self, uri: str, params: dict):
+        return self._session.post('tmdb.request_api', {
+            'uri': uri,
+            'params': params
+        })

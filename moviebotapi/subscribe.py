@@ -93,6 +93,38 @@ class Filter:
         self.apply_country = utils.parse_value(List[str], data.get('apply_area'))
 
 
+class CustomSubscribe:
+    id: int
+    auto_delete: bool
+    desc: str
+    dl_count: int
+    douban_id: int
+    enable: bool
+    episode_count: int
+    gmt_create: datetime.datetime
+    gmt_modified: datetime.datetime
+    last_run_time: datetime.datetime
+    last_run_time_format: str
+    media_type: MediaType
+    name: str
+    personal: bool
+    remote_last_modified: int
+    remote_sub_rule_id: int
+    rename_rule: str
+    save_path: str
+    score_rule_name: str
+    season_number: int
+    skip_exists: bool
+    skip_unknown: bool
+    status: str
+    tmdb_id: int
+    torrent_filter: str
+    uid: int
+
+    def __init__(self, data: Dict):
+        utils.copy_value(data, self)
+
+
 class SubscribeApi:
     def __init__(self, session: Session):
         self._session: Session = session
@@ -141,3 +173,9 @@ class SubscribeApi:
         if not list_:
             return []
         return [Filter(x, self) for x in list_]
+
+    def list_custom_sub(self) -> List[CustomSubscribe]:
+        items = self._session.get('subscribe.get_sub_custom_list')
+        if not items:
+            return []
+        return [CustomSubscribe(x) for x in items]

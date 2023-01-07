@@ -29,3 +29,8 @@ class CommonApi:
         return self._session.post('common.get_image_text', {
             'b64_image': b64_img
         })
+
+    def get_cache_image_filepath(self, img_url: str) -> str:
+        return self._session.get('common.get_cache_image_filepath', {
+            'url': img_url
+        })

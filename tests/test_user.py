@@ -17,3 +17,9 @@ def test_get_user():
     user = server.user.get(1)
     assert user
     assert user.nickname == 'test'
+
+
+def test_upload_img_to_cloud_by_filepath():
+    r = server.user.upload_img_to_cloud_by_filepath(
+        '/Users/yee/workspace/test/movie-robot/plugins/annual_report/report.jpg')
+    print(r)

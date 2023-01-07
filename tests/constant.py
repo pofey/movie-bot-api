@@ -1,2 +1,2 @@
 SERVER_URL = 'http://127.0.0.1:1329'
-ACCESS_KEY = 'sT2B7PNLFXOH48abwvo6tx1EhWdkmrzi'
+ACCESS_KEY = 'dfyqYWCFntrMBi973w12EsxcQKbehvLX'

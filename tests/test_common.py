@@ -18,3 +18,6 @@ def test_get_image_text():
     with open('image.png', "rb") as f:
         base64_data = base64.b64encode(f.read())
     print(server.common.get_image_text(base64_data.decode()))
+
+def test_get_cache_image_filepath():
+    print(server.common.get_cache_image_filepath('https://image.tmdb.org/t/p/original/xEggmiD4WoJBQR2AiVF46yPUUgD.jpg'))

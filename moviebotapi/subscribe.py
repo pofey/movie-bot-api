@@ -135,8 +135,8 @@ class SubscribeApi:
             return
         return Subscribe(sub, self)
 
-    def list(self, media_type: Optional[MediaType] = None, status: Optional[SubStatus] = None):
-        params = {}
+    def list(self, media_type: Optional[MediaType] = None, status: Optional[SubStatus] = None, img_proxy=False):
+        params = {'img_proxy': img_proxy}
         if media_type:
             params.update({'media_type': media_type.value})
         if status is not None:

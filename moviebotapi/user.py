@@ -73,3 +73,8 @@ class UserApi:
         if not list_:
             return []
         return [User(x, self) for x in list_]
+
+    def upload_img_to_cloud_by_filepath(self, filepath: str):
+        return self._session.get('user.upload_img_to_cloud_by_filepath', {
+            'filepath': filepath
+        })

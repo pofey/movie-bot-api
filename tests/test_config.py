@@ -10,3 +10,11 @@ def test_get_and_set():
     free_download = server.config.free_download
     free_download.enable = False
     free_download.save()
+
+
+def test_get_web_config():
+    print(server.config.web.server_url)
+
+
+def test_get_env():
+    print(server.config.env.user_config_dir)

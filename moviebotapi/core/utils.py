@@ -1,12 +1,50 @@
 import datetime
+import decimal
 import json
 import os
 import re
+from enum import Enum
 from typing import Dict, List, _GenericAlias, Optional
 
 import cn2an
 
 from moviebotapi.core.models import MediaType
+
+
+def _parse_field_value(field_value):
+    if isinstance(field_value, decimal.Decimal):  # Decimal -> float
+        field_value = round(float(field_value), 2)
+    elif isinstance(field_value, datetime.datetime):  # datetime -> str
+        field_value = str(field_value)
+    elif isinstance(field_value, list):
+        field_value = [_parse_field_value(i) for i in field_value]
+    if hasattr(field_value, 'to_json'):
+        field_value = field_value.to_json()
+    elif isinstance(field_value, Enum):
+        field_value = field_value.name
+    return field_value
+
+
+def json_object(cls):
+    def to_json(self):
+        """
+        Json序列化
+        :param hidden_fields: 覆盖类属性 hidden_fields
+        :return:
+        """
+
+        model_json = {}
+
+        for column in self.__dict__:
+            if hasattr(self, column):
+                model_json[column] = _parse_field_value(getattr(self, column))
+        if '_sa_instance_state' in model_json:
+            del model_json['_sa_instance_state']
+        return model_json
+
+    cls.to_json = to_json
+
+    return cls
 
 
 def string_to_number(text):
@@ -153,33 +191,45 @@ class _Countries:
 
 
 Countries = _Countries()
-
 CN_EP_PATTERN = '[集话回話画期]'
 TV_NUM_PATTERN = '[1234567890一二三四五六七八九十]{1,4}'
+SEASON_NUM_PATTERN = '[1234567890一二三四五六七八九十]{1,3}'
 
 SEASON_PATTERNS = [
-    re.compile('[sS](%s)?[-—~]{1,3}[sS]?(%s)' % (TV_NUM_PATTERN, TV_NUM_PATTERN)),
-    re.compile('第(%s)[季部辑]?分?[-—~]{1,3}第?(%s)[季部辑]分?' % (TV_NUM_PATTERN, TV_NUM_PATTERN)),
-    re.compile(r'S(?:eason)?\s?(\d+)', re.IGNORECASE),
-    re.compile(r'S(?:eason)?[-]{0,3}(\d+)', re.IGNORECASE),
-    re.compile('第(%s)[季部辑]分?' % TV_NUM_PATTERN)
+    re.compile('[sS](%s)?[-—~]{1,3}[sS]?(%s)' % (SEASON_NUM_PATTERN, SEASON_NUM_PATTERN)),
+    re.compile('第(%s)[季部辑]?分?[-—~]{1,3}第?(%s)[季部辑]分?' % (SEASON_NUM_PATTERN, SEASON_NUM_PATTERN)),
+    re.compile(r'S(?:eason)?(\d{1,3})', re.IGNORECASE),
+    re.compile(r'S(?:eason)?[-]{0,3}(\d{1,3})', re.IGNORECASE),
+    re.compile('第(%s)[季部辑]分?' % SEASON_NUM_PATTERN),
+    re.compile(r'S(?:eason)?\s(\d{1,3})', re.IGNORECASE)
+]
+COMPLETE_SEASON_PATTERNS = [
+    re.compile('全(%s)[季部辑]' % SEASON_NUM_PATTERN)
 ]
 EPISODE_PATTERNS = [
+    re.compile(r'[Ee][Pp]?(%s)' % TV_NUM_PATTERN),
     re.compile('第?(%s)%s' % (TV_NUM_PATTERN, CN_EP_PATTERN)),
     re.compile(r'第\s?(%s)\s?%s' % (TV_NUM_PATTERN, CN_EP_PATTERN)),
-    re.compile(r'[Ee][Pp]?(%s)' % TV_NUM_PATTERN),
     re.compile(r'^(%s)\s?$' % TV_NUM_PATTERN),
     re.compile(r'^(%s)\.' % TV_NUM_PATTERN),
     re.compile(r'(%s)[oO][fF]%s' % (TV_NUM_PATTERN, TV_NUM_PATTERN)),
-    re.compile(r'[\[【\(](%s)[】\]\)]' % TV_NUM_PATTERN),
-    re.compile(r'-\s{0,3}(%s)' % TV_NUM_PATTERN)
+    re.compile(r'[\[【](%s)[】\]]' % TV_NUM_PATTERN),
+    re.compile(r'\s{1}-\s{1}(%s)' % TV_NUM_PATTERN)
 ]
 EPISODE_RANGE_PATTERNS = [
     re.compile('第(%s)%s?-第?(%s)%s' % (TV_NUM_PATTERN, CN_EP_PATTERN, TV_NUM_PATTERN, CN_EP_PATTERN)),
+    re.compile(r'[Ee][Pp]?(\d{1,4})[Ee][Pp]?(\d{1,4})'),
     re.compile(r'[Ee][Pp]?(\d{1,4})-[Ee]?[Pp]?(\d{1,4})'),
     re.compile(r'^(%s)[-到](%s)$' % (TV_NUM_PATTERN, TV_NUM_PATTERN)),
     re.compile(r'^(%s)\s{0,4}-\s{0,4}.+$' % TV_NUM_PATTERN),
-    re.compile(r'[\[【\(](%s)-(%s)[】\]\)]' % (TV_NUM_PATTERN, TV_NUM_PATTERN))
+    re.compile(r'[\[【\(](%s)-(%s)[】\]\)]' % (TV_NUM_PATTERN, TV_NUM_PATTERN)),
+    re.compile(r'(全)(%s)%s' % (TV_NUM_PATTERN, CN_EP_PATTERN))
+]
+COMPLETE_EPISODE_PATTERNS = [
+    re.compile('全(%s)%s' % (TV_NUM_PATTERN, CN_EP_PATTERN)),
+    re.compile('(%s)%s全' % (TV_NUM_PATTERN, CN_EP_PATTERN)),
+    re.compile('全%s' % CN_EP_PATTERN),
+    re.compile('所有%s' % CN_EP_PATTERN)
 ]
 
 

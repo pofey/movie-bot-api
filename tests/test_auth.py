@@ -7,3 +7,7 @@ server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 def test_get_default_ak():
     server.auth.get_default_ak()
+
+
+def test_add_permission():
+    server.auth.add_permission([1, 2], '/common/view#/static/tv_calendar.html')

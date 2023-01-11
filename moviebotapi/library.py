@@ -4,8 +4,10 @@ from typing import List, Optional, Dict
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class MediaLibraryPath:
     path: str
     auto_scan: bool = False
@@ -15,6 +17,7 @@ class MediaLibraryPath:
             utils.copy_value(data, self)
 
 
+@json_object
 class TransferMode(Enum):
     HardLink = 'link'
     Copy = 'copy'

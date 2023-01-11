@@ -4,9 +4,11 @@ from typing import Dict, List, Optional
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 from moviebotapi.subscribe import SubStatus
 
 
+@json_object
 class DoubanPeople:
     """剧组人员、导演、演员等人员信息"""
     douban_id: int
@@ -22,6 +24,7 @@ class DoubanPeople:
         utils.copy_value(data, self)
 
 
+@json_object
 class DoubanMedia:
     id: int
     url: str
@@ -51,6 +54,7 @@ class DoubanMedia:
         self.season_index: int = utils.parse_value(int, data.get('season_index'))
 
 
+@json_object
 class DoubanSearchResult:
     id: int
     cn_name: str
@@ -65,6 +69,7 @@ class DoubanSearchResult:
         self.poster_url: str = utils.parse_value(str, data.get('poster_path'))
 
 
+@json_object
 class DoubanRankingType(Enum):
     movie_top250 = '豆瓣电影Top250'
     movie_real_time_hotest = '实时热门电影'
@@ -90,6 +95,7 @@ class DoubanRankingType(Enum):
     ECPQOJP5Q = '近期热门悬疑'
 
 
+@json_object
 class DoubanRankingItem:
     rank: int
     id: int
@@ -109,6 +115,7 @@ class DoubanRankingItem:
         self.media_type = MediaType.get(data.get('type'))
 
 
+@json_object
 class ApiSearchItem:
     media_type: MediaType
     douban_id: int
@@ -131,6 +138,7 @@ class ApiSearchItem:
             self.rating = utils.parse_value(float, t.get('rating').get('value') if t.get('rating') else None)
 
 
+@json_object
 class DoubanDailyMedia:
     show_date: str
     media_type: str

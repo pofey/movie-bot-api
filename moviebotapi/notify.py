@@ -2,8 +2,10 @@ from enum import Enum
 from typing import Dict, Optional, Union, List
 
 from moviebotapi import Session
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class SystemNotifyType(str, Enum):
     Login = "登陆"
     SmartDownload = "智能下载"

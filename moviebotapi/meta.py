@@ -4,8 +4,10 @@ from typing import Dict, Optional, List, Union
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class Person:
     id: int
     douban_id: int
@@ -26,6 +28,7 @@ class Person:
         utils.copy_value(data, self, True)
 
 
+@json_object
 class Season:
     name: str
     season_number: int
@@ -39,6 +42,7 @@ class Season:
         utils.copy_value(data, self, True)
 
 
+@json_object
 class MediaMeta:
     id: int
     douban_id: int

@@ -4,8 +4,10 @@ from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.decorators import ignore_attr_not_exists
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class TmdbGenres:
     id: int
     name: str
@@ -14,6 +16,7 @@ class TmdbGenres:
         utils.copy_value(data, self)
 
 
+@json_object
 class ProductionCompanies:
     id: int
     logo_path: str
@@ -24,6 +27,7 @@ class ProductionCompanies:
         utils.copy_value(data, self)
 
 
+@json_object
 class SpokenLanguages:
     english_name: str
     iso_639_1: str
@@ -33,6 +37,7 @@ class SpokenLanguages:
         utils.copy_value(data, self)
 
 
+@json_object
 class SearchResultItem:
     adult: bool
     backdrop_path: str
@@ -66,6 +71,7 @@ class SearchResultItem:
             self.title = utils.parse_value(str, data.get('name'))
 
 
+@json_object
 class SearchResult:
     page: int
     total_pages: int
@@ -88,6 +94,7 @@ class SearchResult:
             self.results = []
 
 
+@json_object
 class TmdbMovie:
     id: int
     imdb_id: str
@@ -119,6 +126,7 @@ class TmdbMovie:
         utils.copy_value(data, self)
 
 
+@json_object
 class TmdbPerson:
     adult: bool
     gender: int
@@ -139,6 +147,7 @@ class TmdbPerson:
         utils.copy_value(data, self)
 
 
+@json_object
 class EpisodeMeta:
     air_date: str
     episode_number: int
@@ -159,6 +168,7 @@ class EpisodeMeta:
         utils.copy_value(data, self)
 
 
+@json_object
 class Network:
     id: int
     name: str
@@ -169,6 +179,7 @@ class Network:
         utils.copy_value(data, self)
 
 
+@json_object
 class Season:
     air_date: str
     episode_count: int
@@ -182,6 +193,7 @@ class Season:
         utils.copy_value(data, self)
 
 
+@json_object
 class TmdbTV:
     name: str
     original_name: str
@@ -220,6 +232,7 @@ class TmdbTV:
         utils.copy_value(data, self)
 
 
+@json_object
 class TmdbCredits:
     id: int
     cast: List[TmdbPerson]
@@ -229,6 +242,7 @@ class TmdbCredits:
         utils.copy_value(data, self)
 
 
+@json_object
 class TmdbAkaName:
     iso_3166_1: str
     title: str
@@ -237,6 +251,7 @@ class TmdbAkaName:
         utils.copy_value(data, self)
 
 
+@json_object
 class TmdbExternalIds:
     id: int
     imdb_id: str

@@ -3,8 +3,10 @@ from typing import Dict, List, Optional
 
 from moviebotapi.core import utils
 from moviebotapi.core.session import Session
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class User:
     gmt_create: datetime.datetime
     gmt_modified: datetime.datetime

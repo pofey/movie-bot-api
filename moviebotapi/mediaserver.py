@@ -73,18 +73,20 @@ class MediaServerApi:
     def __init__(self, session: Session):
         self._session: Session = session
 
-    def list_episodes_from_tmdb(self, tmdb_id: int, season_number: int):
+    def list_episodes_from_tmdb(self, tmdb_id: int, season_number: int, fetch_all: bool = False):
         items = self._session.get('media_server.list_episodes_from_tmdb', {
             'tmdb_id': tmdb_id,
-            'season_number': season_number
+            'season_number': season_number,
+            'fetch_all': fetch_all
         })
         if not items:
             return []
         return [MediaItem(x) for x in items]
 
-    def search_by_tmdb(self, tmdb_id: int):
+    def search_by_tmdb(self, tmdb_id: int, fetch_all: bool = False):
         items = self._session.get('media_server.search_by_tmdb', {
-            'tmdb_id': tmdb_id
+            'tmdb_id': tmdb_id,
+            'fetch_all': fetch_all
         })
         if not items:
             return []

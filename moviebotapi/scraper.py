@@ -3,8 +3,10 @@ from typing import Optional, Dict
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class MediaImage:
     """影片图片资源"""
     source: str

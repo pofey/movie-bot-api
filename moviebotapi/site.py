@@ -4,8 +4,10 @@ from typing import Dict, Optional, List, Union
 
 from moviebotapi import Session
 from moviebotapi.core import utils
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class CateLevel1(str, Enum):
     Movie = 'Movie'
     TV = 'TV'
@@ -24,6 +26,7 @@ class CateLevel1(str, Enum):
         return
 
 
+@json_object
 class Torrent:
     # 种子id
     id: str

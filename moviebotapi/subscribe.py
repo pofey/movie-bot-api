@@ -5,8 +5,10 @@ from typing import Dict, Optional, List
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class SubStatus(int, Enum):
     """
     订阅中
@@ -22,6 +24,7 @@ class SubStatus(int, Enum):
     WaitVersion = 2
 
 
+@json_object
 class Subscribe:
     id: int
     uid: int
@@ -63,6 +66,7 @@ class Subscribe:
         self._api.delete(self.id, deep_delete)
 
 
+@json_object
 class Filter:
     filter_name: str
     priority: int
@@ -93,6 +97,7 @@ class Filter:
         self.apply_country = utils.parse_value(List[str], data.get('apply_area'))
 
 
+@json_object
 class CustomSubscribe:
     id: int
     auto_delete: bool

@@ -2,8 +2,10 @@ from typing import Dict
 
 from moviebotapi import Session
 from moviebotapi.core import utils
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class DoubanConfig:
     cookie: str
 
@@ -20,6 +22,7 @@ class DoubanConfig:
         })
 
 
+@json_object
 class FreeDownloadConfig:
     available_space: int
     avg_statistics_period: int
@@ -43,6 +46,7 @@ class FreeDownloadConfig:
         })
 
 
+@json_object
 class WebConfig:
     """web访问配置"""
     host: str
@@ -62,6 +66,7 @@ class WebConfig:
         })
 
 
+@json_object
 class Env:
     config_dir: str
     user_config_dir: str

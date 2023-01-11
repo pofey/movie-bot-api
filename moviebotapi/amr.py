@@ -3,8 +3,10 @@ from typing import List, Dict, Optional
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.models import MediaType
+from moviebotapi.core.utils import json_object
 
 
+@json_object
 class MediaNameMeta:
     cn_name: str = None
     aka_names: List[str] = []
@@ -22,6 +24,7 @@ class MediaNameMeta:
         utils.copy_value(data, self)
 
 
+@json_object
 class MetaSearchResult:
     tmdb_id: int = None
     douban_id: int = None

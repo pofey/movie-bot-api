@@ -13,7 +13,7 @@ with open('requirements.txt') as handle:
             requirements.append(package)
 setup(
     name='movie-bot-api',
-    version='0.0.47',
+    version='0.0.48',
     author='yee',
     author_email='yipengfei329@gmail.com',
     license='MIT',

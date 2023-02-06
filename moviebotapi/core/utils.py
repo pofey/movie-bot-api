@@ -22,6 +22,11 @@ def _parse_field_value(field_value):
         field_value = field_value.to_json()
     elif isinstance(field_value, Enum):
         field_value = field_value.name
+    elif isinstance(field_value, Dict):
+        val = {}
+        for key_ in field_value:
+            val[key_] = _parse_field_value(field_value[key_])
+        field_value = val
     return field_value
 
 

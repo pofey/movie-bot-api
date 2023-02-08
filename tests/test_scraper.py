@@ -7,6 +7,6 @@ server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
 def test_get_images():
-    image = server.scraper.get_images(MediaType.Movie, 663712)
+    image = server.scraper.get_images(MediaType.TV, 153312, 1, 6)
     assert image
     assert image.poster

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from moviebotapi import Session
 from moviebotapi.core import utils
@@ -27,7 +27,7 @@ class PluginApi:
     def __init__(self, session: Session):
         self._session: Session = session
 
-    def get_installed_list(self):
+    def get_installed_list(self) -> List[PluginMeta]:
         """
         获取本地安装的插件列表
         """

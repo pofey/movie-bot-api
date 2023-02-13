@@ -23,5 +23,4 @@ class AuthApi:
         })
 
     def get_cloud_access_token(self) -> Optional[str]:
-        r = self._session.get('auth.get_cloud_access_token')
-        return r.get('data')
+        return self._session.get('auth.get_cloud_access_token')

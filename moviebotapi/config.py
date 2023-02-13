@@ -1,5 +1,7 @@
 from typing import Dict
 
+import yaml
+
 from moviebotapi import Session
 from moviebotapi.core import utils
 from moviebotapi.core.utils import json_object
@@ -96,3 +98,14 @@ class ConfigApi:
     @property
     def env(self):
         return Env(self._session.get('setting.get_env'))
+
+    def register_channel_template(self, tmpl_filepath: str):
+        """
+        注册一个通道模版文件
+        模版示范可以参考conf/notify_template 目录内自带模版文件，此模版内包含了所有系统通知的内容格式
+        :param tmpl_filepath: 模版文件路径
+        :return:
+        """
+        with open(tmpl_filepath, 'r', encoding='utf-8') as file:
+            tmpl = yaml.safe_load(file)
+        self._session.post('setting.register_channel_template', tmpl)

@@ -18,3 +18,7 @@ def test_get_web_config():
 
 def test_get_env():
     print(server.config.env.user_config_dir)
+
+
+def test_register_channel_template():
+    server.config.register_channel_template('/home/WUYING_yee_1343011038466001/workspace/test/movie-robot/conf/notify_template/telegram (copy).yml')

@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from moviebotapi import Session
 
@@ -21,3 +21,7 @@ class AuthApi:
             'role_code': role_code,
             'uri': uri
         })
+
+    def get_cloud_access_token(self) -> Optional[str]:
+        r = self._session.get('auth.get_cloud_access_token')
+        return r.get('data')

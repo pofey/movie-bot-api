@@ -5,6 +5,7 @@ from moviebotapi.library import LibraryApi
 from moviebotapi.mediaserver import MediaServerApi
 from moviebotapi.meta import MetaApi
 from moviebotapi.notify import NotifyApi
+from moviebotapi.plugin import PluginApi
 from moviebotapi.scraper import ScraperApi
 from moviebotapi.site import SiteApi
 from moviebotapi.subscribe import SubscribeApi
@@ -33,6 +34,7 @@ class MovieBotServer:
     auth: AuthApi
     event: EventApi
     media_server: MediaServerApi
+    plugin: PluginApi
 
     def __init__(self, session: Session = None):
         if session:
@@ -55,3 +57,4 @@ class MovieBotServer:
         self.auth = AuthApi(session)
         self.event = EventApi(session)
         self.media_server = MediaServerApi(session)
+        self.plugin = PluginApi(session)

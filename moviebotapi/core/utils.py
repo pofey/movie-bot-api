@@ -129,7 +129,7 @@ def parse_value(func, value):
         elif func == datetime.datetime:
             return datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         elif func in [Dict, dict]:
-            return _dict_value
+            return _dict_value(value)
         elif func in [List, list]:
             return _list_value(value)
         elif func == MediaType:

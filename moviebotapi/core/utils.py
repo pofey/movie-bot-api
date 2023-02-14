@@ -107,10 +107,8 @@ def _list_value(value):
 def _dict_value(value):
     if isinstance(value, str):
         return json.loads(value)
-    elif isinstance(value, dict):
-        return value
     else:
-        return dict(value)
+        return value
 
 
 def parse_value(func, value):

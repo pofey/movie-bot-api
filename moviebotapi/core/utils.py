@@ -127,7 +127,10 @@ def parse_value(func, value):
             except ValueError:
                 return float('nan')
         elif func == datetime.datetime:
-            return datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+            if value:
+                return datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+            else:
+                return None
         elif func in [Dict, dict]:
             return _dict_value(value)
         elif func in [List, list]:

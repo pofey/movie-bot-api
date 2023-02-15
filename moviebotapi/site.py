@@ -190,3 +190,20 @@ class SiteApi:
         if not torrents:
             return []
         return [Torrent(x) for x in torrents]
+
+    def search_remote(self, query: Union[SearchQuery, List[SearchQuery]],
+                      cate_level1: Optional[List[CateLevel1]] = None, timeout: Optional[int] = 15,
+                      site_id: Optional[List[str]] = None) -> List[Torrent]:
+        if isinstance(query, SearchQuery):
+            query = [{'key': query.key.value, 'value': query.value}]
+        elif isinstance(query, list):
+            query = [{'key': str(x.key), 'value': x.value} for x in query]
+        torrents = self._session.post('site.search_remote', {
+            'query': query,
+            'cate_level1': cate_level1,
+            'timeout': timeout,
+            'site_id': site_id
+        })
+        if not torrents:
+            return []
+        return [Torrent(x) for x in torrents]

@@ -2,9 +2,8 @@ from moviebotapi import MovieBotServer
 from moviebotapi.core.exceptions import ApiErrorException
 from moviebotapi.core.session import AccessKeySession
 from moviebotapi.site import SearchQuery, SearchType
+from tests import server
 from tests.constant import SERVER_URL, ACCESS_KEY
-
-server = MovieBotServer(AccessKeySession(SERVER_URL, ACCESS_KEY))
 
 
 def test_list():
@@ -25,6 +24,10 @@ def test_set():
 
 def test_search_local():
     assert server.site.search_local(SearchQuery(SearchType.Keyword, '子弹列车'))
+
+
+def test_search_remote():
+    assert server.site.search_remote(SearchQuery(SearchType.Keyword, '子弹列车'))
 
 
 def test_list_local_torrents():

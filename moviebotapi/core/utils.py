@@ -11,6 +11,27 @@ import cn2an
 from moviebotapi.core.models import MediaType
 
 
+def trans_unit_to_mb(size: float, unit: str) -> float:
+    """
+    按文件大小尺寸规格，转换成MB单位的数字
+    :param size:
+    :param unit:
+    :return:
+    """
+    if unit == 'GB' or unit == 'GiB':
+        return round(size * 1024, 2)
+    elif unit == 'MB' or unit == 'MiB':
+        return round(size, 2)
+    elif unit == 'KB' or unit == 'KiB':
+        return round(size / 1024, 2)
+    elif unit == 'TB' or unit == 'TiB':
+        return round(size * 1024 * 1024, 2)
+    elif unit == 'PB' or unit == 'PiB':
+        return round(size * 1024 * 1024 * 1024, 2)
+    else:
+        return size
+
+
 def trans_size_str_to_mb(size: str):
     """
     把一个字符串格式的文件尺寸单位，转换成MB单位的标准数字
@@ -60,16 +81,16 @@ def trans_size_str_to_mb(size: str):
         return 0.0
     if s.find(',') != -1:
         s = s.replace(',', '')
-    return NumberUtils.trans_unit_to_mb(float(s), u)
+    return trans_unit_to_mb(float(s), u)
 
 
-def _parse_field_value(field_value):
+def parse_field_value(field_value):
     if isinstance(field_value, decimal.Decimal):  # Decimal -> float
         field_value = round(float(field_value), 2)
     elif isinstance(field_value, datetime.datetime):  # datetime -> str
         field_value = str(field_value)
     elif isinstance(field_value, list):
-        field_value = [_parse_field_value(i) for i in field_value]
+        field_value = [parse_field_value(i) for i in field_value]
     if hasattr(field_value, 'to_json'):
         field_value = field_value.to_json()
     elif isinstance(field_value, Enum):
@@ -77,7 +98,7 @@ def _parse_field_value(field_value):
     elif isinstance(field_value, Dict):
         val = {}
         for key_ in field_value:
-            val[key_] = _parse_field_value(field_value[key_])
+            val[key_] = parse_field_value(field_value[key_])
         field_value = val
     return field_value
 
@@ -94,7 +115,7 @@ def json_object(cls):
 
         for column in self.__dict__:
             if hasattr(self, column):
-                model_json[column] = _parse_field_value(getattr(self, column))
+                model_json[column] = parse_field_value(getattr(self, column))
         if '_sa_instance_state' in model_json:
             del model_json['_sa_instance_state']
         return model_json

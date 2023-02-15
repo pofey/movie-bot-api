@@ -2,12 +2,12 @@ from typing import List, Dict, Optional
 
 from moviebotapi import Session
 from moviebotapi.core import utils
+from moviebotapi.core.basemodel import BaseModel
 from moviebotapi.core.models import MediaType
-from moviebotapi.core.utils import json_object
 
 
-@json_object
-class MediaNameMeta:
+class MediaNameMeta(BaseModel):
+    filepath: Optional[str] = None
     cn_name: str = None
     aka_names: List[str] = []
     en_name: str = None
@@ -19,13 +19,31 @@ class MediaNameMeta:
     media_codec: str = None
     media_audio: List[str] = None
     release_team: str = None
+    tmdb_id: int = None
+    media_type: MediaType = None
 
-    def __init__(self, data: Dict):
+    def __init__(self, data: Dict = None):
         utils.copy_value(data, self)
 
 
-@json_object
-class MetaSearchResult:
+class TVMeta(BaseModel):
+    season_start: int = None
+    season_end: int = None
+    season_full_index: List[int] = []
+    ep_start: int = None
+    ep_end: int = None
+    ep_full_index: List[int] = []
+    season_is_fill: bool = False
+    ep_is_fill: bool = False
+    contains_complete_ep: bool = False
+    contains_complete_season: bool = False
+    contains_multiple_season: bool = False
+
+    def __init__(self, data: Dict = None):
+        utils.copy_value(data, self)
+
+
+class MetaSearchResult(BaseModel):
     tmdb_id: int = None
     douban_id: int = None
     cn_name: str = None

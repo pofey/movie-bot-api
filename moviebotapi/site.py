@@ -4,10 +4,9 @@ from typing import Dict, Optional, List, Union
 
 from moviebotapi import Session
 from moviebotapi.core import utils
-from moviebotapi.core.utils import json_object
+from moviebotapi.core.basemodel import BaseModel
 
 
-@json_object
 class CateLevel1(str, Enum):
     Movie = 'Movie'
     TV = 'TV'
@@ -19,15 +18,31 @@ class CateLevel1(str, Enum):
     Other = 'Other'
 
     @staticmethod
-    def get_type(enum_name: str):
+    def get_type(enum_name: str) -> "CateLevel1":
         for item in CateLevel1:
             if item.name == enum_name:
                 return item
         return
 
 
-@json_object
-class Torrent:
+class TVSeries(BaseModel):
+    season_start: int = None
+    season_end: int = None
+    season_full_index: List[int] = []
+    ep_start: int = None
+    ep_end: int = None
+    ep_full_index: List[int] = []
+    season_is_fill: bool = False
+    ep_is_fill: bool = False
+    contains_complete_ep: bool = False
+    contains_complete_season: bool = False
+    contains_multiple_season: bool = False
+
+    def __init__(self, data: Optional[Dict] = None):
+        utils.copy_value(data, self)
+
+
+class Torrent(BaseModel):
     # 种子id
     id: str
     # 站点编号
@@ -70,8 +85,84 @@ class Torrent:
     # 封面链接
     poster_url: str
 
-    def __init__(self, data: Dict):
+    def __init__(self, data: Optional[Dict] = None):
         utils.copy_value(data, self)
+
+    @staticmethod
+    def build_by_parse_item(site_config, item):
+        t = Torrent()
+        t.site_id = utils.parse_value(str, site_config.get('id'))
+        t.id = utils.parse_value(int, item.get('id'))
+        t.name = utils.parse_value(str, item.get('title'))
+        t.subject = utils.parse_value(str, item.get('description'), '')
+        if t.subject:
+            t.subject = t.subject.strip()
+        t.free_deadline = utils.parse_value(datetime.datetime, item.get('free_deadline'))
+        t.imdb_id = utils.parse_value(str, item.get('imdbid'))
+        t.upload_count = utils.parse_value(int, item.get('seeders'), 0)
+        t.downloading_count = utils.parse_value(int, item.get('leechers'), 0)
+        t.download_count = utils.parse_value(int, item.get('grabs'), 0)
+        t.download_url = utils.parse_value(str, item.get('download'))
+        if t.download_url and not t.download_url.startswith('http'):
+            t.download_url = site_config.get('domain') + t.download_url
+        t.publish_date = utils.parse_value(datetime.datetime, item.get('date'), datetime.datetime.now())
+        t.cate_id = utils.parse_value(str, item.get('category'))
+        for c in site_config.get('category_mappings'):
+            cid = t.cate_id
+            id_mapping = site_config.get('category_id_mapping')
+            if id_mapping:
+                for mid in id_mapping:
+                    if str(mid.get('id')) == str(cid):
+                        if isinstance(mid.get('mapping'), list):
+                            cid = mid.get('mapping')[0]
+                        else:
+                            cid = mid.get('mapping')
+            if str(c.get('id')) == str(cid):
+                t.cate_level1 = CateLevel1.get_type(c.get('cate_level1'))
+        t.details_url = utils.parse_value(str, item.get('details'))
+        if t.details_url:
+            t.details_url = site_config.get('domain') + t.details_url
+        t.download_volume_factor = float(item.get_value('downloadvolumefactor', 1))
+        t.upload_volume_factor = item.get_value('uploadvolumefactor', 1)
+        t.size_mb = utils.trans_size_str_to_mb(utils.parse_value(str, item.get('size'), '0'))
+        t.poster_url = utils.parse_value(str, item.get('poster'))
+        t.minimum_ratio = utils.parse_value(float, item.get('minimumratio'), 0.0)
+        t.minimum_seed_time = utils.parse_value(int, item.get('minimumseedtime'), 0)
+        if t.poster_url:
+            if t.poster_url.startswith("./"):
+                t.poster_url = site_config.get('domain') + t.poster_url[2:]
+            elif not t.poster_url.startswith("http"):
+                t.poster_url = site_config.get('domain') + t.poster_url
+        return t
+
+
+class TorrentDetail(BaseModel):
+    site_id: str = None
+    name: str = None
+    subject: str = None
+    download_url: str = None
+    filename: str = None
+    intro: str = None
+    publish_date: datetime.datetime = None
+
+    @staticmethod
+    def build(site_config, item):
+        if not item:
+            return
+        t = TorrentDetail()
+        t.site_id = site_config.get('id')
+        t.id = utils.parse_value(int, item.get('id'))
+        t.name = utils.parse_value(str, item.get('title'), '')
+        t.subject = utils.parse_value(str, item.get('description'), '')
+        if t.subject:
+            t.subject = t.subject.strip()
+        t.download_url = utils.parse_value(str, item.get('download'))
+        if t.download_url and not t.download_url.startswith('http'):
+            t.download_url = site_config.get('domain') + t.download_url
+        t.filename = utils.parse_value(str, item.get('filename'))
+        t.intro = utils.parse_value(str, item.get('intro'))
+        t.publish_date = utils.parse_value(datetime.datetime, item.get('date'))
+        return t
 
 
 class SearchType(str, Enum):
@@ -79,7 +170,7 @@ class SearchType(str, Enum):
     Imdb = 'imdb_id'
 
 
-class SearchQuery:
+class SearchQuery(BaseModel):
     key: SearchType
     value: str
 
@@ -99,7 +190,7 @@ class SiteStatus(int, Enum):
     Error = 2
 
 
-class Site:
+class Site(BaseModel):
     id: int
     gmt_modified: datetime.datetime
     uid: int
@@ -131,6 +222,18 @@ class Site:
 
     def delete(self):
         self._api.delete(self.id)
+
+
+class SiteUserinfo(BaseModel):
+    uid: int
+    username: str
+    user_group: str
+    share_ratio: float
+    uploaded: float
+    downloaded: float
+    seeding: int
+    leeching: int
+    vip_group: bool = False
 
 
 class SiteApi:
@@ -207,3 +310,6 @@ class SiteApi:
         if not torrents:
             return []
         return [Torrent(x) for x in torrents]
+
+
+TorrentList = List[Torrent]

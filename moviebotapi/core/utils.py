@@ -11,6 +11,58 @@ import cn2an
 from moviebotapi.core.models import MediaType
 
 
+def trans_size_str_to_mb(size: str):
+    """
+    把一个字符串格式的文件尺寸单位，转换成MB单位的标准数字
+    :param size:
+    :return:
+    """
+    if not size:
+        return 0.0
+    s = None
+    u = None
+    if size.find(' ') != -1:
+        arr = size.split(' ')
+        s = arr[0]
+        u = arr[1]
+    else:
+        if size.endswith('GB'):
+            s = size[0:-2]
+            u = 'GB'
+        elif size.endswith('GiB'):
+            s = size[0:-3]
+            u = 'GB'
+        elif size.endswith('MB'):
+            s = size[0:-2]
+            u = 'MB'
+        elif size.endswith('MiB'):
+            s = size[0:-3]
+            u = 'MB'
+        elif size.endswith('KB'):
+            s = size[0:-2]
+            u = 'KB'
+        elif size.endswith('KiB'):
+            s = size[0:-3]
+            u = 'KB'
+        elif size.endswith('TB'):
+            s = size[0:-2]
+            u = 'TB'
+        elif size.endswith('TiB'):
+            s = size[0:-3]
+            u = 'TB'
+        elif size.endswith('PB'):
+            s = size[0:-2]
+            u = 'PB'
+        elif size.endswith('PiB'):
+            s = size[0:-3]
+            u = 'PB'
+    if not s:
+        return 0.0
+    if s.find(',') != -1:
+        s = s.replace(',', '')
+    return NumberUtils.trans_unit_to_mb(float(s), u)
+
+
 def _parse_field_value(field_value):
     if isinstance(field_value, decimal.Decimal):  # Decimal -> float
         field_value = round(float(field_value), 2)
@@ -111,7 +163,7 @@ def _dict_value(value):
         return value
 
 
-def parse_value(func, value):
+def parse_value(func, value, default_value=None):
     if value is not None:
         if func == bool:
             if value in (1, True, "1", "true"):
@@ -145,7 +197,8 @@ def parse_value(func, value):
                     res.append(parse_value(func.__args__[0], x))
                 return res
         return func(value)
-    return value
+    else:
+        return default_value
 
 
 """文件后缀"""

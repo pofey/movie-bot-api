@@ -5,6 +5,8 @@ class MediaType(str, Enum):
     Movie = 'Movie'
     TV = 'TV'
     Collection = 'Collection'
+    XX = 'XX'
+    Other = '其他'
 
     @staticmethod
     def get(value):
@@ -15,3 +17,7 @@ class MediaType(str, Enum):
             return MediaType.TV
         if l == 'collection':
             return MediaType.Collection
+        if l == 'xx':
+            return MediaType.XX
+        else:
+            return MediaType.Other

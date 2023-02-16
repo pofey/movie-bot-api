@@ -196,6 +196,8 @@ def parse_value(func, value, default_value=None):
 
         elif func in (int, float):
             try:
+                if isinstance(value, str):
+                    value = value.replace(',', '')
                 return func(value)
             except ValueError:
                 return float('nan')
@@ -203,7 +205,10 @@ def parse_value(func, value, default_value=None):
             if isinstance(value, datetime.datetime):
                 return value
             elif isinstance(value, str):
-                return datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+                if value:
+                    return datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+                else:
+                    return None
             else:
                 return None
         elif func in [Dict, dict]:

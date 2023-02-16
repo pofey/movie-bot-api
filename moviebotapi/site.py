@@ -122,8 +122,8 @@ class Torrent(BaseModel):
         t.details_url = utils.parse_value(str, item.get('details'))
         if t.details_url:
             t.details_url = site_config.get('domain') + t.details_url
-        t.download_volume_factor = float(item.get_value('downloadvolumefactor', 1))
-        t.upload_volume_factor = item.get_value('uploadvolumefactor', 1)
+        t.download_volume_factor = utils.parse_value(float, item.get('downloadvolumefactor'), 1)
+        t.upload_volume_factor = utils.parse_value(int, item.get('uploadvolumefactor'))
         t.size_mb = utils.trans_size_str_to_mb(utils.parse_value(str, item.get('size'), '0'))
         t.poster_url = utils.parse_value(str, item.get('poster'))
         t.minimum_ratio = utils.parse_value(float, item.get('minimumratio'), 0.0)

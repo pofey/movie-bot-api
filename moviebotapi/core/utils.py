@@ -200,7 +200,9 @@ def parse_value(func, value, default_value=None):
             except ValueError:
                 return float('nan')
         elif func == datetime.datetime:
-            if value:
+            if isinstance(value, datetime.datetime):
+                return value
+            elif isinstance(value, str):
                 return datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
             else:
                 return None

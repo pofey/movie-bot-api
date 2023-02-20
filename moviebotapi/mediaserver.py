@@ -2,6 +2,7 @@ from typing import List, Dict
 
 from moviebotapi import Session
 from moviebotapi.core import utils
+from moviebotapi.core.basemodel import BaseModel
 from moviebotapi.core.models import MediaType
 from moviebotapi.core.utils import json_object
 
@@ -67,6 +68,18 @@ class MediaItem:
 
     def __init__(self, data: Dict):
         utils.copy_value(data, self)
+
+
+class MediaFolder(BaseModel):
+    """媒体服务器配置的影音库文件夹"""
+    id: str
+    name: str
+    path: str
+    sub_folders: list
+
+
+ListMediaItem = List[MediaItem]
+ListMediaFolder = List[MediaFolder]
 
 
 class MediaServerApi:

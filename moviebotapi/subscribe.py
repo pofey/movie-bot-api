@@ -171,7 +171,7 @@ class SubscribeApi:
         params = {'id': douban_id}
         if filter_name:
             params.update({'filter_name': filter_name})
-        self._session.get('subscribe.sub_douban', params=params)
+        self._session.post('subscribe.sub_douban', json=params)
 
     def get_filters(self):
         list_ = self._session.get('subscribe.get_filters')

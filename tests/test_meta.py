@@ -23,4 +23,4 @@ def test_get_media_by_douban_id():
 
 
 def test_share_meta_from_id():
-    print(server.meta.share_meta_from_id(1396, 2373195))
+    print(server.meta.share_meta_from_id(872176, 35415401))

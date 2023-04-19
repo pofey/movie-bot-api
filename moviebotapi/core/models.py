@@ -4,7 +4,7 @@ from enum import Enum
 class MediaType(str, Enum):
     Movie = 'Movie'
     TV = 'TV'
-    Collection = 'Collection'
+    MultiMedia = 'MultiMedia'
     XX = 'XX'
     Other = '其他'
 
